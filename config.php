@@ -6,11 +6,11 @@ global $db;
 
 $config = array();
 if(ENVIRONMENT == 'development') {
-	define("BASE_URL", "http://localhost/estoque/");
-	$config['dbname'] = 'estoque';
+	define("BASE_URL", "http://localhost/impacto/");
+	$config['dbname'] = 'impacto';
 	$config['host'] = 'localhost';
 	$config['dbuser'] = 'root';
-	$config['dbpass'] = 'root';
+	$config['dbpass'] = 'root123';
 } else {
 	define("BASE_URL", "http://localhost/estoque/");
 	$config['dbname'] = 'nova_loja';

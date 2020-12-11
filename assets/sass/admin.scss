@@ -1,0 +1,160 @@
+//IMPORT FONTS
+@font-face {
+    font-family: Sora;
+    src: url(../fonts/Sora-Regular.ttf);
+}
+@font-face {
+    font-family: Sora-Bold;
+    src: url(../fonts/Sora-Bold.ttf);
+}
+//COLOR VARIABLES
+$default-color: #7FCAF5;
+$menu-color: #456577;
+$text-color: #4C7993;
+$select-border: #808B92;
+$btn-bckg: #c3e6f8;
+$btn-secondary: #6CF598;
+
+* {
+    margin: 0;
+    padding: 0;
+}
+.topAdmin {
+    width: 100%;
+    height: 50px;
+    background-color: $menu-color;
+    color: #FFF;
+    .topBrand {
+        width: 20%;
+        height: 100%;
+        float: left;
+        img {
+            color: #FFF;
+            height: 90%;
+            margin-left: calc(50% - 25px);
+            margin-top: 5px;
+        }
+    }
+    .topRight {
+        width: 80%;
+        height: 100%;
+        float: left;
+        a {
+            float: right;
+            margin-right: 50px;
+            line-height: 50px;
+            font-family: 'Sora-Bold';
+            text-decoration: none;
+            color: #FFF;
+            text-shadow: 0 0 2px #000;
+            &:hover {
+                color: $btn-secondary;
+                transition: .5s;
+            }
+        }
+    }
+}
+.leftMenu {
+    width: 20%;
+    height: calc(100vh - 50px);
+    background-color: $menu-color;
+    float: left;
+    img {
+        margin-left: 33%;
+        margin-top: 10px;
+    }
+    .userInfo {
+        width: 90%;
+        margin: auto;
+        text-align: center;
+        color: #FFF;
+        span {
+            font-family: 'Sora';
+            font-size: 14px;
+        }
+        img {
+            width: 12px;
+            margin-left: 5px;
+        }
+    }
+    .menuItens {
+        width: 90%;
+        height: 450px;
+        margin: auto;
+        margin-top: 10px;
+        ul {
+            list-style: none;
+            li {
+                width: 100%;
+                height: 35px;
+                padding-bottom: 10px;
+                font-family: 'Sora';
+                font-size: 18px;
+                color: #FFF;
+                line-height: 50px;
+                a {
+                    color: #FFF;
+                    text-decoration: none;
+                    &:hover {
+                        color: $btn-secondary;
+                        transition: .5s;
+                    }
+                }
+                &:nth-child(1) {
+                    background-image: url('../icons/white-product.svg');
+                    background-size: 28px;
+                    background-repeat: no-repeat;
+                    background-position-x: right;
+                    background-position-y: 10px;
+                }
+                &:nth-child(2) {
+                    background-image: url('../icons/white-categories.svg');
+                    background-size: 28px;
+                    background-repeat: no-repeat;
+                    background-position-x: right;
+                    background-position-y: 10px;
+                }
+                &:nth-child(3) {
+                    background-image: url('../icons/white-author.svg');
+                    background-size: 28px;
+                    background-repeat: no-repeat;
+                    background-position-x: right;
+                    background-position-y: 10px;
+                }
+                &:nth-child(4) {
+                    background-image: url('../icons/white-report.svg');
+                    background-size: 28px;
+                    background-repeat: no-repeat;
+                    background-position-x: right;
+                    background-position-y: 10px;
+                }
+                &:nth-child(5) {
+                    background-image: url('../icons/white-metrics.svg');
+                    background-size: 28px;
+                    background-repeat: no-repeat;
+                    background-position-x: right;
+                    background-position-y: 10px;
+                }
+                &:nth-child(6) {
+                    background-image: url('../icons/white-approval.svg');
+                    background-size: 28px;
+                    background-repeat: no-repeat;
+                    background-position-x: right;
+                    background-position-y: 10px;
+                }
+                &:nth-child(7) {
+                    background-image: url('../icons/white-users.svg');
+                    background-size: 28px;
+                    background-repeat: no-repeat;
+                    background-position-x: right;
+                    background-position-y: 10px;
+                }
+            }
+        }
+    }
+}
+.viewArea {
+    width: 80%;
+    height: calc(100vh - 50px);
+    float: left;
+}

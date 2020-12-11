@@ -21,4 +21,13 @@ class Controller {
 		include 'views/'.$viewName.'.php';
 	}
 
+	// VERIFICA SE O USUÁRIO ESTÁ LOGADO
+	public function isLogged(){
+		$user = new Users();
+		if($user->isLogged() === false) {
+            header("Location: ".BASE_URL."admLogin");
+            exit;
+        }
+	}
+
 }

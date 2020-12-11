@@ -1,0 +1,104 @@
+//IMPORT FONTS
+@font-face {
+    font-family: Sora;
+    src: url(../fonts/Sora-Regular.ttf);
+}
+@font-face {
+    font-family: Sora-Bold;
+    src: url(../fonts/Sora-Bold.ttf);
+}
+//COLOR VARIABLES
+$default-color: #7FCAF5;
+$text-color: #4C7993;
+$select-border: #808B92;
+$btn-bckg: #c3e6f8;
+$btn-secondary: #6CF598;
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.loginInfo {
+    width: 30%;
+    height: 100vh;
+    float: left;
+    .loginArea {
+        width: 70%;
+        height: 600px;
+        margin: auto;
+        margin-top: 150px;
+        box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        border-radius: 8px;
+        img {
+            margin-top: 25px;
+            margin-left: calc(50% - 45px);
+        }
+        .loginInput {
+            width: 90%;
+            height: 100px;
+            margin: auto;
+            margin-top: 50px;
+            .loginLabel {
+                font-family: 'Sora';
+                color: $text-color;
+                background-color: #FFF;
+                position: absolute;
+                margin-left: 20px;
+                margin-top: 5px;
+                width: 70px;
+                text-align: center;
+            }
+            .inputField {
+                width: 95%;
+                height: 35px;
+                border: 1px solid $default-color;
+                border-radius: 5px;
+                padding-left: 15px;
+                color: $text-color;
+                margin-bottom: 25px;
+                outline: none;
+            }
+            .inputAccess {
+                width: 100%;
+                height: 50px;
+                border-radius: 8px;
+                border: 1px solid $default-color;
+                color: #FFF;
+                font-family: 'Sora-Bold';
+                background: linear-gradient(93.74deg, #6CF598 0%, rgba(127, 202, 245, 0.9) 100%);
+                font-size: 18px;
+                margin-top: 40px;
+                &:hover {
+                    background: rgba(127, 202, 245, 0.9);
+                }
+            }
+        }
+    }
+}
+.loginError {
+    width: 100%;
+    height: 35px;
+    background-color: lightcoral;
+    color: #000;
+    font-family: 'Sora-Bold';
+    text-align: center;
+    line-height: 35px;
+    border-radius: 8px;
+    border: 1px solid red;
+    box-shadow: 0 0 4px red;
+}
+.brandInfo {
+    width: 70%;
+    height: 100vh;
+    float: left;
+    background-image: url(../images/bookWP.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    .bgMask {
+        width: 100%;
+        height: 100%;
+        background-color: rgba($color: #000000, $alpha: 0.8);
+    }
+}

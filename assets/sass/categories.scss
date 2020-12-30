@@ -1,0 +1,47 @@
+//IMPORT FONTS
+@font-face {
+    font-family: Sora;
+    src: url(../fonts/Sora-Regular.ttf);
+}
+@font-face {
+    font-family: Sora-Bold;
+    src: url(../fonts/Sora-Bold.ttf);
+}
+//COLOR VARIABLES
+$default-color: #7FCAF5;
+$text-color: #4C7993;
+$select-border: #808B92;
+$btn-bckg: #c3e6f8;
+$btn-secondary: #6CF598;
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.categoriesArea {
+    width: 100%;
+    height: calc(100vh - 160px);
+    .showCategories {
+        width: 20%;
+        height: 50px;
+        border-radius: 5px;
+        float: left;
+        margin: 10px;
+        box-shadow: 0 0 2px rgba(0,0,0,0.9);
+        .catName {
+            width: 60%;
+            height: 50px;
+            float: left;
+            padding-left: 10px;
+            line-height: 50px;
+            overflow: hidden;
+        }
+        .catAction {
+            width: 40%;
+            height: 50px;
+            float: left;
+            line-height: 50px;
+        }
+    }
+}

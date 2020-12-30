@@ -62,10 +62,10 @@ function saveProduct() {
         cache: false,
         processData: false,
         success: function(data){
-            console.log(data)
         }
     })
     $('#addProduct').modal('hide');
+    location.reload();
 }
 
 function seeProduct(id) {
@@ -86,4 +86,75 @@ function editProduct(id){
         $('#editProduct').html(data)
     })
     $('#updProduct').modal('show')
+    adjust();
+}
+
+function adjust() {
+    alert('modal aberto')
+}
+
+function deleteImg(id) {
+    let c = confirm("Deseja excluir essa imagem?")
+    if(c == true){
+        $.post('', {
+            acao_produtos: 'deleteImg',
+            id
+        }, function(data){
+            $('#showImages').html(data)
+        })
+    }
+}
+
+function insertImg(id){ 
+    var file_data = $('#updFile').prop('files')[0];
+    var formData = new FormData()
+    formData.append('product_id', id)
+    formData.append('acao_produtos', 'updImage')
+    formData.append('files', file_data)
+    
+    $.ajax({
+        type: 'POST',
+        url: '',
+        data: formData,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(data1){
+            $('#showImages').html(data1)
+            $('#updArea').html('<label>Arquivo Enviado com Sucesso!</label><br/>')
+        },
+    })
+    location.reload();
+
+}
+
+function updProduct(){
+    let form = document.getElementById('formProduct')
+
+    $.ajax({
+        type: 'POST',
+        url: '',
+        data: new FormData(form),
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(data){
+            
+        }
+    })
+    $('#updProduct').modal('hide');
+    location.reload();
+}
+
+function deleteProduct(id){
+    let c = confirm("Deseja excluir este produto?")
+    if(c == true){
+        $.post('', {
+            acao_produtos: 'deleteProduct',
+            id
+        }, function(data) {
+            alert(data)
+        })
+        location.reload();
+    }
 }

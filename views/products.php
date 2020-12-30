@@ -31,7 +31,7 @@
                 <td>
                     <button class="btn btn-primary btn-sm" onclick="seeProduct(<?php echo $prod['prodID']; ?>)"><i class="fas fa-eye"></i></button>
                     <button class="btn btn-warning btn-sm" onclick="editProduct(<?php echo $prod['prodID']; ?>)"><i class="fas fa-pen"></i></button>
-                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteProduct(<?php echo $prod['prodID']; ?>)"><i class="fas fa-trash"></i></button>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -218,7 +218,7 @@
 			</div>
 			<!-- Modal footer -->
 			<div class="modal-footer" style="background-color: #c3e6f8">
-				<button type="button" class="btn btn-success" onclick="saveProduct()">Salvar</button>
+				<button type="button" class="btn btn-success" onclick="updProduct()">Salvar</button>
 				<button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
 			</div>
 		</div>

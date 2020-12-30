@@ -13,36 +13,36 @@ class Products extends Model {
         $sql->bindValue(":category", $category);
         $sql->bindValue(":amount", $amount);
         $sql->bindValue(":type", $type);
-        $sql->execute();
+        if($sql->execute()){
+            $product_id = $this->db->lastInsertID();
 
-        $product_id = $this->db->lastInsertID();
-
-        $sql = $this->db->prepare("INSERT INTO product_details SET product_id = :product_id, edition_number = :edition_number, edition_year = :edition_year, language = :language, width = :width, height = :height, number_pages = :number_pages, description = :description, amazon_link = :amazon_link, google_link = :google_link");
-        $sql->bindValue(":product_id", $product_id);
-        $sql->bindValue(":edition_number", $edition_number);
-        $sql->bindValue(":edition_year", $edition_year);
-        $sql->bindValue(":language", $language);
-        $sql->bindValue(":width", $width);
-        $sql->bindValue(":height", $height);
-        $sql->bindValue(":number_pages", $number_pages);
-        $sql->bindValue(":description", $desc);
-        $sql->bindValue(":amazon_link", $amazonLink);
-        $sql->bindValue(":google_link", $googleLink);
-        $sql->execute();
-
-        $tipo = $url['type'];
-
-        if(in_array($tipo, array('image/jpeg', 'image/png'))) {
-
-            $tmpname = md5(time(). rand(0,999)).'.jpg';
-            move_uploaded_file($url['tmp_name'], './assets/images/products/'.$tmpname);
-
-            $sql = $this->db->prepare("INSERT INTO product_images SET product_id = :product_id, url = :url, capa = :capa, data_cadastro = now()");
+            $sql = $this->db->prepare("INSERT INTO product_details SET product_id = :product_id, edition_number = :edition_number, edition_year = :edition_year, language = :language, width = :width, height = :height, number_pages = :number_pages, description = :description, amazon_link = :amazon_link, google_link = :google_link");
             $sql->bindValue(":product_id", $product_id);
-            $sql->bindValue(":url", $tmpname);
-            $sql->bindValue(":capa", '1');
+            $sql->bindValue(":edition_number", $edition_number);
+            $sql->bindValue(":edition_year", $edition_year);
+            $sql->bindValue(":language", $language);
+            $sql->bindValue(":width", $width);
+            $sql->bindValue(":height", $height);
+            $sql->bindValue(":number_pages", $number_pages);
+            $sql->bindValue(":description", $desc);
+            $sql->bindValue(":amazon_link", $amazonLink);
+            $sql->bindValue(":google_link", $googleLink);
             $sql->execute();
-        }        
+
+            $tipo = $url['type'];
+
+            if(in_array($tipo, array('image/jpeg', 'image/png'))) {
+
+                $tmpname = md5(time(). rand(0,999)).'.jpg';
+                move_uploaded_file($url['tmp_name'], './assets/images/products/'.$tmpname);
+
+                $sql = $this->db->prepare("INSERT INTO product_images SET product_id = :product_id, url = :url, capa = :capa, data_cadastro = now()");
+                $sql->bindValue(":product_id", $product_id);
+                $sql->bindValue(":url", $tmpname);
+                $sql->bindValue(":capa", '1');
+                $sql->execute();
+            }     
+        };   
     }
 
     public function fetchProduct($id) {
@@ -169,12 +169,22 @@ class Products extends Model {
             $category = $sql->fetchAll(PDO::FETCH_ASSOC);
         }
 
+
+        $sql = $this->db->prepare("SELECT * FROM product_images WHERE product_id = :id");
+        $sql->bindValue(":id", $info['prodID']);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $images = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
         $data ='
-            <form method="POST" enctype="multipart/form-data" id="editProduct">
+            <form method="POST" enctype="multipart/form-data" id="formProduct">
                 <div class="row">
                     <div class="col-sm-6">
                         <label>Nome:</label>
-                        <input type="text" name="acao_produtos" value="cadProduto" hidden>
+                        <input type="text" name="acao_produtos" value="updProduct" hidden>
+                        <input type="text" name="id" value="'.$info['prodID'].'" hidden>
                         <input type="text" class="form-control form-control-sm" name="name" value="'.$info['name'].'">
                     </div>
                     <div class="col-sm-3">
@@ -283,19 +293,34 @@ class Products extends Model {
                         <textarea class="form-control form-control-sm" style="resize: none; height: 200px" name="desc">'.$info['description'].'</textarea>
                     </div>
                     <div class="col-sm-3">
-                        <label>Imagem principal do produto</label>
-                        <div class="showCoverImage">
-                            <div class="coverImage">
-                                <img src="./assets/images/products/'.$info['url'].'">
-                            </div>
-                            <div class="actionImage">
-                                <button class="btn btn-danger btn-sm btn-img-delete" type="button">Excluir</button>
-                            </div>
+                        <label>Imagem do produto</label>
+                        <div class="showCoverImage" id="showImages">';
+                            foreach($images as $img) {
+                                $data .='
+                                    <div class="coverImage">
+                                        <img src="./assets/images/products/'.$img['url'].'">
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteImg('.$img['id'].')">Excluir</button>
+                                    </div>
+                                ';
+                            }
+                            $data .='
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <label>Selecione a Capa do Livro: </label><br/>
-                        <input type="file" name="upload_arquivos">
+                    <div class="col-sm-4" style="border: 1px solid #4C7993; border-radius: 5px" id="updArea">';
+                        if(count($images) < 2){
+                            $data .='
+                                <label>Selecione outra imagem: </label><br/>
+                                <input type="file" name="upload_arquivos" id="updFile"><br/><br/>
+                                <input class="btn btn-warning btn-sm" onclick="insertImg('.$info['prodID'].')" value="Enviar">
+                                ';
+                                
+                        };
+                        if(count($images) >= 2){
+                            $data .='
+                                <label>Limite Máximo de imagens atingido </label><br/>
+                                ';
+                        }
+                            $data .='
                     </div>
                 </div>
             </form>
@@ -303,12 +328,128 @@ class Products extends Model {
         
         return $data;
     }
+
+    public function updProduct($id, $name, $category, $author, $price, $type, $amazonLink, $googleLink, $edition_number, $edition_year, $language, $width, $height, $hasDiscount, $discount, $amount, $number_pages, $desc){
+        $sql = $this->db->prepare("UPDATE products SET name = :name, price = :price, has_discount = :has_discount, discount = :discount, author = :author, category = :category, amount = :amount, type = :type, data_cadastro = now() WHERE id = :id");
+        $sql->bindValue(":id", $id);
+        $sql->bindValue(":name", $name);
+        $sql->bindValue(":price", $price);
+        $sql->bindValue(":has_discount", $hasDiscount);
+        $sql->bindValue(":discount", $discount);
+        $sql->bindValue(":author", $author);
+        $sql->bindValue(":category", $category);
+        $sql->bindValue(":amount", $amount);
+        $sql->bindValue(":type", $type);
+        if($sql->execute()){
+            $sql = $this->db->prepare("UPDATE product_details SET product_id = :product_id, edition_number = :edition_number, edition_year = :edition_year, language = :language, width = :width, height = :height, number_pages = :number_pages, description = :description, amazon_link = :amazon_link, google_link = :google_link WHERE product_id = :product_id");
+            $sql->bindValue(":product_id", $id);
+            $sql->bindValue(":edition_number", $edition_number);
+            $sql->bindValue(":edition_year", $edition_year);
+            $sql->bindValue(":language", $language);
+            $sql->bindValue(":width", $width);
+            $sql->bindValue(":height", $height);
+            $sql->bindValue(":number_pages", $number_pages);
+            $sql->bindValue(":description", $desc);
+            $sql->bindValue(":amazon_link", $amazonLink);
+            $sql->bindValue(":google_link", $googleLink);
+            $sql->execute();
+        };
+
+        
+    }
+
+    public function updImage($product_id, $img){
+        $data1 = '';
+        $tipo = $img['type'];
+
+        if(in_array($tipo, array('image/jpeg', 'image/png'))) {
+
+            $tmpname = md5(time(). rand(0,999)).'.jpg';
+            move_uploaded_file($img['tmp_name'], './assets/images/products/'.$tmpname);
+
+            $sql = $this->db->prepare("INSERT INTO product_images SET product_id = :product_id, url = :url, capa = :capa, data_cadastro = now()");
+            $sql->bindValue(":product_id", $product_id);
+            $sql->bindValue(":url", $tmpname);
+            $sql->bindValue(":capa", '0');
+            $sql->execute();
+
+            $sql = $this->db->prepare("SELECT * FROM product_images WHERE product_id = :id");
+            $sql->bindValue(":id", $product_id);
+            $sql->execute();
+
+            if($sql->rowCount() > 0) {
+                $images = $sql->fetchAll(PDO::FETCH_ASSOC);
+            }
+
+            foreach($images as $img){
+                $data1 .='
+                <div class="coverImage">
+                    <img src="./assets/images/products/'.$img['url'].'">
+                    <button class="btn btn-danger btn-sm" onclick="deleteImg('.$img['id'].')">Excluir</button>
+                </div>
+                ';
+            }
+            $data1 .='';
+            
+            return $data1;
+        }
+
+    }
+
+    public function deleteImage($id){
+        $data = '';
+
+        $sql = $this->db->prepare("SELECT * FROM product_images WHERE id = :id");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $images = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        $sql = $this->db->prepare("DELETE FROM product_images WHERE id = :id");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+
+        foreach($images as $img){
+            $data .='
+            <div class="coverImage">
+                <img src="./assets/images/products/'.$img['url'].'">
+                <button class="btn btn-danger btn-sm" onclick="deleteImg('.$img['id'].')">Excluir</button>
+            </div>
+            ';
+        }
+        $data .='';
+        
+        return $data;
+    }
+
+    public function deleteProduct($id){
+        $sql = $this->db->prepare("DELETE FROM products WHERE id = :id");
+        $sql->bindValue(":id", $id);
+
+        if($sql->execute()){
+            $sql = $this->db->prepare("DELETE FROM product_details WHERE product_id = :id");
+            $sql->bindValue(":id", $id);
+            $sql->execute();
+
+            $sql = $this->db->prepare("DELETE FROM product_images WHERE product_id = :id");
+            $sql->bindValue(":id", $id);
+            $sql->execute();
+
+            return('Produto Excluído com Sucesso!');
+        } else {
+            return('Falha ao excluir Produto');
+        }
+        
+    }
     
     public function getProducts() {
         $data = '';
-        $sql = $this->db->prepare("SELECT products.id AS prodID, products.*, product_details.*, product_images.* FROM products
+        $sql = $this->db->prepare("SELECT products.id AS prodID, products.*, product_details.*,         product_images.* FROM products
                                     LEFT JOIN product_details ON (products.id = product_details.product_id)
-                                    LEFT JOIN product_images ON (products.id = product_images.product_id) ORDER BY products.id DESC");
+                                    LEFT JOIN product_images ON (products.id = product_images.product_id)
+                                    WHERE product_images.capa = 1 ORDER BY products.id DESC");
         $sql->execute();
 
         if($sql->rowCount() > 0) {

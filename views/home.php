@@ -6,8 +6,12 @@
     <meta name="description" content="Marketplace Impacto">
     <title>Impacto MarketPlace</title>
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/home.css">
+    <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/home.js"></script>
 </head>
 <body>
+    <div class="loginModal">
+            
+    </div>
     <header class="headerArea">
         <div class="headerBrand">
             <img src="<?php echo BASE_URL; ?>assets/images/logo-marca.svg">
@@ -17,11 +21,12 @@
                 <li>Empresa<img src="<?php echo BASE_URL; ?>assets/icons/arrowdown-icon.svg"></li>
                 <li>Produtos<img src="<?php echo BASE_URL; ?>assets/icons/arrowdown-icon.svg"></li>
                 <li>Publique Conosco</li>
-                <li>Blog</li>
+                <!-- <li>Blog</li> -->
             </ul>
         </div>
         <div class="userHeader">
-            <span>Olá <strong>Estranho</strong></span><img src="<?php echo BASE_URL; ?>assets/icons/arrowdown-icon.svg">
+            <!-- <span>Olá <strong>Estranho</strong></span><img src="<?php echo BASE_URL; ?>assets/icons/arrowdown-icon.svg"> -->
+            <span onclick="openLoginModal()" style="cursor: pointer">Login</span>
         </div>
         <div class="userCartHeader">
             <img src="<?php echo BASE_URL; ?>assets/icons/bag-icon.svg" id="cart">
@@ -72,11 +77,11 @@
                             <span class="authorName"><?php echo $info['author']; ?></span>
                         </div>
                         <div class="priceProduct">
-                            <?php if($info['has_discount'] === 'S' ): ?>
-                                <span class="origPrice">R$<?php echo $info['original_price']; ?></span><br/>
-                                <span class="descPrice">R$<?php echo $info['original_price'] - ($info['original_price'] / 100 * $info['discount']); ?></span>
+                            <?php if($info['has_discount'] === 'Sim' ): ?>
+                                <span class="origPrice">R$<?php echo $info['price']; ?></span><br/>
+                                <span class="descPrice">R$<?php echo $info['price'] - ($info['price'] / 100 * $info['discount']); ?></span>
                             <?php else: ?>
-                                <span class="descPrice">R$<?php echo $info['original_price']; ?></span><br/>
+                                <span class="descPrice">R$<?php echo $info['price']; ?></span><br/>
                             <?php endif; ?>
                         </div>
                         <button class="sendToCart">Adicionar à sacola</button>

@@ -519,4 +519,53 @@ class Products extends Model {
             }
         }
     }
+
+    public function addNewAuthor($name) {
+        $array = array();
+        //Verify if don't already exists an author with the same name
+        $sql = $this->db->prepare("SELECT * FROM product_author WHERE name = :name");
+        $sql->bindValue(":name", $name);
+        $sql->execute();
+
+        if($sql->rowCount() == 0){
+            //If not, insert a new author name
+            $sql = $this->db->prepare("INSERT INTO product_author SET name = :name, data_cadastro = now()");
+            $sql->bindValue(":name", $name);
+            $sql->execute();
+
+            //Fetch all authors to return data
+            $sql = $this->db->prepare("SELECT * FROM product_author ORDER BY name ASC");
+            $sql->execute();
+
+            if($sql->rowCount() > 0){
+                $array = $sql->fetchAll(PDO::FETCH_ASSOC);
+                
+                $result ='
+                <option value="" readonly>Selecione...</option>';
+                    foreach($array as $aut){
+                        $result .='
+                        <option value="'.$aut['id'].'">'.$aut['name'].'</option>';
+                    };
+                $result .='';
+            return $result;
+            }        
+        } else {
+            //Fetch all authors to return data
+            $sql = $this->db->prepare("SELECT * FROM product_author ORDER BY name ASC");
+            $sql->execute();
+
+            if($sql->rowCount() > 0){
+                $array = $sql->fetchAll(PDO::FETCH_ASSOC);
+                
+                $result ='
+                <option value="" readonly>Selecione...</option>';
+                    foreach($array as $aut){
+                        $result .='
+                        <option value="'.$aut['id'].'">'.$aut['name'].'</option>';
+                    };
+                $result .='';
+            return $result;
+            }
+        }
+    }
 }

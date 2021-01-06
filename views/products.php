@@ -20,6 +20,7 @@
             </tr>
         </thead>
         <tbody>
+        <?php if(!empty($getProducts)): ?>
             <?php foreach($getProducts as $prod): ?>
             <tr>
                 <td><img style="height: 80px" src="<?php echo BASE_URL; ?>assets/images/products/<?php echo $prod['url']; ?>"></td>
@@ -35,6 +36,7 @@
                 </td>
             </tr>
             <?php endforeach; ?>
+        <?php endif; ?>
         </tbody>
     </table>
 </div>
@@ -73,7 +75,17 @@
                         </div>
                         <div class="col-sm-2">
                             <label>Autor:</label>
-                            <input type="text" class="form-control form-control-sm" name="author">
+                            <div class="input-group">
+                                <select class="custom-select custom-select-sm" name="author" id="newAuthor">
+                                    <option value="" readonly>Selecione...</option>
+                                    <?php foreach($authors as $author): ?>
+                                        <option value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-success btn-sm" type="button" onclick="addAuthor()"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-sm-1">
                             <label>Preço:</label>
@@ -246,6 +258,33 @@
 			<!-- Modal footer -->
 			<div class="modal-footer">
                 <button type="button" class="btn btn-success" onclick="addNewCategory()">Salvar</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal AddNewAuthor -->
+<div class="modal fade info" id="newAuthorModal" style="background-color:rgba(0,0,0,0.5)">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<h4 class="modal-title">Adicionar Novo Autor</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<!-- Modal body -->
+			<div class="modal-body" id="cadProduct">
+				<div class="row">
+                    <div class="col-sm">
+                        <label>Nome do Autor:</label>
+                        <input type="text" class="form-control form-control-sm" name="authorName" required>
+                    </div>
+                </div>
+			</div>
+			<!-- Modal footer -->
+			<div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="addNewAuthor()">Salvar</button>
 				<button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
 			</div>
 		</div>

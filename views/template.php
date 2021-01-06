@@ -33,7 +33,7 @@
 					<li><a href="<?php echo BASE_URL; ?>reports">Relatórios</a></li>
 					<li><a href="<?php echo BASE_URL; ?>metrics">Métricas</a></li>
 					<li><a href="<?php echo BASE_URL; ?>approval">Aprovações</a></li>
-					<li><a href="<?php echo BASE_URL; ?>users">Usuários</a></li>
+					<li><a href="<?php echo BASE_URL; ?>clients">Clientes Registrados</a></li>
 				</ul>
 			</div>
 		</div>

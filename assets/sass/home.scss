@@ -17,6 +17,14 @@ $btn-bckg: #c3e6f8;
     margin: 0;
     padding: 0;
 }
+.loginModal {
+    width: 300px;
+    height: 100vh;
+    position: absolute;
+    background-color: lavender;
+    right: 0;
+}
+
 .headerArea {
     width: 100%;
     height: 539px;
@@ -385,6 +393,271 @@ $btn-bckg: #c3e6f8;
             img:nth-child(1) {
                 margin-top: 20%;
                 margin-left: 45%;
+            }
+        }
+    }
+}
+
+//RESPONSIVIDADE
+
+@media only screen and (max-width: 1366px){
+    //HEADER MENU
+    .headerArea {
+        .headerBrand {
+            width: 50px;
+            height: 50px;
+        }
+        .headerMenu {
+            width: 38%;
+            height: 50px;
+            float: left;
+            ul {
+                li {
+                    line-height: 50px;
+                }
+            }
+        }
+        .userHeader {
+            width: 18%;
+            height: 50px;
+            span {
+                line-height: 50px;
+            }
+        }
+        .userCartHeader {
+            width: 7%;
+            height: 50px;
+        }
+        
+    }
+
+    .frontFilter{
+        display: none;
+    }
+
+    //SHOW PRODUCTS
+    .showProducts {
+        .productContent {
+            width: 65%;
+            min-height: 500px;
+            margin: auto;
+            padding-top: 350px;
+            .lancamentosProducts {
+                position: absolute;
+                top: 400px;
+                left: 17.5%;
+                width: 65%;
+                height: 500px;
+                h1 {
+                    font-family: 'Sora';
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 36px;
+                    color: $text-color;
+                }
+                .products {
+                    width: 269px;
+                    height: 464px;
+                    float: left;
+                    margin-left: 15px;
+                    margin-top: 20px;
+                    box-shadow: 0 0 4px rgba(0,0,0,0.5);
+                    border-radius: 16px;
+                    background-color: #FFF;
+                    .imgProduct {
+                        width: 55%;
+                        height: 200px;
+                        margin: auto;
+                        margin-top: 16px;
+                    }
+                    .infoProduct {
+                        width: 90%;
+                        height: 50px;
+                        margin: auto;
+                        margin-top: 16px;
+                        padding-top: 10px;
+                        .prodTitle {
+                            font-family: 'Sora-Bold';
+                            font-weight: bold;
+                            font-size: 16px;
+                            color: $text-color;
+                        }
+                        .authorName {
+                            font-family: 'Sora';
+                            font-size: 14px;
+                            color: $text-color;
+                        }
+                    }
+                    .priceProduct {
+                        width: 90%;
+                        height: 60px;
+                        margin: auto;
+                        margin-top: 16px;
+                        .origPrice {
+                            font-family: 'Sora';
+                            font-size: 18px;
+                            color: $text-color;
+                            text-decoration: line-through;
+                        }
+                        .descPrice {
+                            font-family: 'Sora-Bold';
+                            font-weight: bold;
+                            font-size: 24px;
+                            color: $text-color;
+                        }
+                    }
+                    .sendToCart {
+                        width: 90%;
+                        height: 50px;
+                        background-color: $btn-bckg;
+                        border-radius: 8px;
+                        color: $text-color;
+                        font-family: 'Sora';
+                        font-style: normal;
+                        font-size: 16px;
+                        font-weight: 600;
+                        margin-left: 5%;
+                        margin-top: 16px;
+                        border: none;
+        
+                    }
+                }
+            }
+            .allProducts {
+                width: 100%;
+                height: auto;
+                margin-top: 50px;
+                background-color: red;
+                h1 {
+                    font-family: 'Sora';
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 36px;
+                    color: $text-color;
+                }
+                .products {
+                    width: 269px;
+                    height: 464px;
+                    float: left;
+                    margin-left: 15px;
+                    margin-top: 20px;
+                    box-shadow: 0 0 4px rgba(0,0,0,0.5);
+                    border-radius: 16px;
+                    background-color: #FFF;
+                    .imgProduct {
+                        width: 55%;
+                        height: 200px;
+                        margin: auto;
+                        margin-top: 16px;
+                    }
+                    .infoProduct {
+                        width: 90%;
+                        height: 50px;
+                        margin: auto;
+                        margin-top: 16px;
+                        padding-top: 10px;
+                        .prodTitle {
+                            font-family: 'Sora-Bold';
+                            font-weight: bold;
+                            font-size: 16px;
+                            color: $text-color;
+                        }
+                        .authorName {
+                            font-family: 'Sora';
+                            font-size: 14px;
+                            color: $text-color;
+                        }
+                    }
+                    .priceProduct {
+                        width: 90%;
+                        height: 60px;
+                        margin: auto;
+                        margin-top: 16px;
+                        .origPrice {
+                            font-family: 'Sora';
+                            font-size: 18px;
+                            color: $text-color;
+                            text-decoration: line-through;
+                        }
+                        .descPrice {
+                            font-family: 'Sora-Bold';
+                            font-weight: bold;
+                            font-size: 24px;
+                            color: $text-color;
+                        }
+                    }
+                    .sendToCart {
+                        width: 90%;
+                        height: 50px;
+                        background-color: $btn-bckg;
+                        border-radius: 8px;
+                        color: $text-color;
+                        font-family: 'Sora';
+                        font-style: normal;
+                        font-size: 16px;
+                        font-weight: 600;
+                        margin-left: 5%;
+                        margin-top: 16px;
+                        border: none;
+        
+                    }
+                }
+            }
+        }
+    }
+    .footer {
+        display: none;
+        width: 100%;
+        height: 500px;
+        padding-top: 100px;
+        .footerSection {
+            width: 20%;
+            height: 250px;
+            float: left;
+            margin-left: 2.5%;
+            margin-right: 2.5%;
+            font-family: 'Sora';
+            font-size: 14px;
+            font-weight: 400;
+            ul {
+                list-style: none;
+                margin-left: 40%;
+                li {
+                    margin-top: 5px;
+                }
+            }
+            li:nth-child(1){
+                font-weight: 700;
+                font-size: 16px;
+            }
+            &:nth-child(4) {
+                text-align: center;
+            }
+        }
+        .footerMedia {
+            width: 100%;
+            height: 300px;
+            .footerBrand {
+                width: 50%;
+                height: 100%;
+                float: left;
+                img {
+                    margin-left: 40%;
+                    margin-top: 5%;
+                }
+    
+            }
+            .footerSocial {
+                width: 50%;
+                height: 100%;
+                float: left;
+                img {
+                    padding-right: 30px;
+                }
+                img:nth-child(1) {
+                    margin-top: 20%;
+                    margin-left: 45%;
+                }
             }
         }
     }

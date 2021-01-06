@@ -6,6 +6,7 @@ class productsController extends Controller {
         $data = array();
         $user = new Users();
         $product = new Products();
+        $author = new Authors();
 
         if(!empty($_POST['acao_produtos']) && isset($_POST['acao_produtos'])){
             if($_POST['acao_produtos'] == 'addNewCategory'){
@@ -13,6 +14,13 @@ class productsController extends Controller {
                 echo $product->addNewCategory($name);
                 exit;
             }
+
+            if($_POST['acao_produtos'] == 'addNewAuthor'){
+                $name = addslashes($_POST['name']);
+                echo $product->addNewAuthor($name);
+                exit;
+            }
+
             if($_POST['acao_produtos'] == 'cadProduto') {
                 $name = addslashes($_POST['name']);
                 $category = addslashes($_POST['category']);
@@ -109,6 +117,7 @@ class productsController extends Controller {
             }
         }
         
+        $data['authors'] = $author->fetchAllAuthors();
         $data['getProducts'] = $product->getProducts();
         $data['userInfo'] = $user->getUser();
         $data['categoryProduct'] = $product->getCategories();

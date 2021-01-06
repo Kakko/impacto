@@ -7,6 +7,11 @@ function addCategory() {
     $('#newCategory').modal('show')
 }
 
+function addAuthor() {
+    $("[name='authorName']").val('')
+    $('#newAuthorModal').modal('show')
+}
+
 function addNewCategory() {
     let name = $("[name='categoryName']").val()
     if(name != ''){
@@ -19,6 +24,22 @@ function addNewCategory() {
         $('#newCategory').modal('hide')
     } else {
         alert('A Categoria Precisa ter um nome')
+        
+    }
+}
+
+function addNewAuthor() {
+    let name = $("[name='authorName']").val()
+    if(name != ''){
+        $.post('', {
+            acao_produtos: 'addNewAuthor',
+            name,
+        }, function(data){
+            $('#newAuthor').html(data)
+        })
+        $('#newAuthorModal').modal('hide')
+    } else {
+        alert('O autor Precisa ter um nome')
         
     }
 }

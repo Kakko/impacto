@@ -1,0 +1,52 @@
+{
+    "workbench.colorTheme": "Just Black",
+    "auto-close-tag.activationOnLanguage": [
+
+        "xml",
+        "php",
+        "blade",
+        "ejs",
+        "jinja",
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "plaintext",
+        "markdown",
+        "vue",
+        "liquid",
+        "erb",
+        "lang-cfml",
+        "cfml",
+        "HTML (EEx)",
+        "HTML (Eex)",
+        "plist"
+    ],
+
+    //LIVE SASS COMPILER
+    "liveSassCompile.settings.generateMap": false,
+    "liveSassCompile.settings.formats":[
+
+        {
+            "format": "compressed",
+            "extensionName": ".css",
+            "savePath": "/assets/css"
+        },
+    ],
+    //FIRA CODE E LIGATURES
+    "editor.fontFamily": "Fira Code",
+    "editor.fontSize": 12,
+    "editor.fontLigatures": true,
+    "editor.minimap.enabled": false,
+    "window.zoomLevel": -1,
+    "[json]": {
+    
+        "editor.quickSuggestions": {
+            "strings": true
+        },
+        "editor.suggest.insertMode": "replace",
+        "gitlens.codeLens.scopes": [
+            "document"
+        ]
+    }
+}

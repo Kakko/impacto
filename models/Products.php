@@ -446,9 +446,10 @@ class Products extends Model {
     
     public function getProducts() {
         $data = '';
-        $sql = $this->db->prepare("SELECT products.id AS prodID, products.*, product_details.*,         product_images.* FROM products
+        $sql = $this->db->prepare("SELECT products.id AS prodID, products.*, product_details.*,product_images.url, product_author.name AS author_name FROM products
                                     LEFT JOIN product_details ON (products.id = product_details.product_id)
                                     LEFT JOIN product_images ON (products.id = product_images.product_id)
+                                    LEFT JOIN product_author ON (products.author = product_author.id)
                                     WHERE product_images.capa = 1 ORDER BY products.id DESC");
         $sql->execute();
 
@@ -567,5 +568,204 @@ class Products extends Model {
             return $result;
             }
         }
+    }
+
+    public function sendToCartGU($guest_user_id, $productID){
+        $sql = $this->db->prepare("SELECT * FROM guest_user WHERE guest_user_id = :guest_user_id");
+        $sql->bindValue(":guest_user_id", $guest_user_id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetch(PDO::FETCH_ASSOC);
+            $updatedProductID = $data['itens_on_cart'].','.$productID;
+
+            $sql2 = $this->db->prepare("UPDATE guest_user SET itens_on_cart = :itens_on_cart WHERE guest_user_id = :guest_user_id");
+            $sql2->bindValue(":itens_on_cart", $updatedProductID);
+            $sql2->bindValue(":guest_user_id", $guest_user_id);
+            $sql2->execute();
+
+            
+        } else {
+            $sql = $this->db->prepare("INSERT INTO guest_user SET guest_user_id = :guest_user_id, itens_on_cart = :itens_on_cart, data_cadastro = now()");
+            $sql->bindValue(":guest_user_id", $guest_user_id);
+            $sql->bindValue(":itens_on_cart", $productID);
+            $sql->execute();
+        }
+
+        $sql = $this->db->prepare("SELECT itens_on_cart FROM guest_user WHERE guest_user_id = :guest_user_id");
+        $sql->bindValue(":guest_user_id", $guest_user_id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $data = $sql->fetch(PDO::FETCH_ASSOC);
+            
+            $data = explode(',', $data['itens_on_cart']);
+            $count = count($data);
+        }
+
+        return $count;
+    }
+
+    public function getCartNumber($guest_id){
+        $sql = $this->db->prepare("SELECT itens_on_cart FROM guest_user WHERE guest_user_id = :guest_user_id");
+        $sql->bindValue(":guest_user_id", $guest_id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $data = $sql->fetch(PDO::FETCH_ASSOC);
+            
+            $data = explode(',', $data['itens_on_cart']);
+            $count = count($data);
+        }
+
+        return $count;
+    }
+
+    public function fetchGuestCart($id){
+        $result = '';
+        $sql = $this->db->prepare("SELECT * FROM guest_user WHERE guest_user_id = :guest_user_id");
+        $sql->bindValue(":guest_user_id", $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetch(PDO::FETCH_ASSOC);
+            
+            $data = explode(',', $data['itens_on_cart']);
+            $result .='
+                <div class="productsArea" id="guestCart">
+                    <div class="cartTitle">Itens na sacola</div>
+            ';
+
+            
+            foreach($data as $d){
+                $sql = $this->db->prepare("SELECT products.*, product_author.name AS author_name, product_images.url AS url FROM products 
+                                            LEFT JOIN product_author ON (product_author.id = products.author)
+                                            LEFT JOIN product_images ON (products.id = product_images.product_id)
+                                            WHERE products.id = :id");
+                $sql->bindValue(":id", $d);
+                $sql->execute();
+
+                if($sql->rowCount() > 0){
+                    $info = $sql->fetch(PDO::FETCH_ASSOC);
+                }
+                $result .='
+                    <div class="cartProducts">
+                        <div class="frontImage"><img src="./assets/images/products/'.$info['url'].'"></div>
+                        <div class="cartInfoProduct">
+                            <div class="cartTitleProduct">'.$info['name'].'</div>
+                            <div class="cartAuthorProduct">'.$info['author_name'].'</div>
+                            <div class="amount">Quantidade</div>
+                            <div class="changeAmount">
+                                <div class="lowerAmount" onclick="lowerProductAmount('.$info['id'].')"><img src="./assets/icons/less-icon1.svg"></div>
+                                <input type="number" class="actualAmount" id="actualAmount'.$info['id'].'" value="1">
+                                <div class="raiseAmount" onclick="raiseProductAmount('.$info['id'].')"><img src="./assets/icons/plus-icon1.svg"></div>
+                            </div>
+                        </div>
+                        <div class="cartAction" onclick="removeProductCart('.$info['id'].')"><img src="./assets/icons/trash-bag-item.svg"></div>
+                    </div>
+                ';                
+            }
+            $result .='
+            </div>
+            <div class="subTotal">SubTotal:R$2000,00</div>';
+            if(!isset($_SESSION['cUser'])){
+                $result .='
+                    <button class="closeCart" onclick="proceedToLog()">Finalizar Compra</button>';
+            } else {
+                $result .='
+                    <button class="closeCart" onclick="proceedToFinish('.$_SESSION['cUser'].')">Finalizar Compra</button>
+                ';
+            }
+            $result .='
+            <button class="continueShopping" onclick="closeCartModal()">Continuar Comprando</button>
+            ';
+        }
+
+        return $result;
+    }
+
+    public function removeProductCart($id, $userID) {
+        $array = array();
+
+        $sql = $this->db->prepare("SELECT itens_on_cart FROM guest_user WHERE itens_on_cart LIKE :id AND guest_user_id = :guest_user_id");
+        $sql->bindValue(":id", "%".$id."%");
+        $sql->bindValue(":guest_user_id", $userID);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $array = $sql->fetch(PDO::FETCH_ASSOC);
+        }
+
+        $array = explode(',', $array['itens_on_cart']);
+        $key = array_search($id, $array);
+        unset($array[$key]);
+        
+        $dados = implode(',', $array);
+
+        $sql = $this->db->prepare("UPDATE guest_user SET itens_on_cart = :dados WHERE guest_user_id = :guest_user_id");
+        $sql->bindValue(":dados", $dados);
+        $sql->bindValue(":guest_user_id", $userID);
+        $sql->execute();
+
+        $result = '';
+        $sql = $this->db->prepare("SELECT * FROM guest_user WHERE guest_user_id = :guest_user_id");
+        $sql->bindValue(":guest_user_id", $userID);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetch(PDO::FETCH_ASSOC);
+            
+            $data = explode(',', $data['itens_on_cart']);
+            $result .='
+                <div class="productsArea" id="guestCart">
+                    <div class="cartTitle">Itens na sacola</div>
+            ';
+
+            
+            foreach($data as $d){
+                $sql = $this->db->prepare("SELECT products.*, product_author.name AS author_name, product_images.url AS url FROM products 
+                                            LEFT JOIN product_author ON (product_author.id = products.author)
+                                            LEFT JOIN product_images ON (products.id = product_images.product_id)
+                                            WHERE products.id = :id");
+                $sql->bindValue(":id", $d);
+                $sql->execute();
+
+                if($sql->rowCount() > 0){
+                    $info = $sql->fetch(PDO::FETCH_ASSOC);
+                }
+                $result .='
+                    <div class="cartProducts">
+                        <div class="frontImage"><img src="./assets/images/products/'.$info['url'].'"></div>
+                        <div class="cartInfoProduct">
+                            <div class="cartTitleProduct">'.$info['name'].'</div>
+                            <div class="cartAuthorProduct">'.$info['author_name'].'</div>
+                            <div class="amount">Quantidade</div>
+                            <div class="changeAmount">
+                                <div class="lowerAmount" onclick="lowerProductAmount('.$info['id'].')"><img src="./assets/icons/less-icon1.svg"></div>
+                                <input type="number" class="actualAmount" id="actualAmount'.$info['id'].'" value="1">
+                                <div class="raiseAmount" onclick="raiseProductAmount('.$info['id'].')"><img src="./assets/icons/plus-icon1.svg"></div>
+                            </div>
+                        </div>
+                        <div class="cartAction" onclick="removeProductCart('.$info['id'].')"><img src="./assets/icons/trash-bag-item.svg"></div>
+                    </div>
+                ';                
+            }
+            $result .='
+            </div>
+            <div class="subTotal">SubTotal:R$2000,00</div>';
+            if(!isset($_SESSION['cUser'])){
+                $result .='
+                    <button class="closeCart" onclick="proceedToLog()">Finalizar Compra</button>';
+            } else {
+                $result .='
+                    <button class="closeCart" onclick="proceedToFinish('.$_SESSION['cUser'].')">Finalizar Compra</button>
+                ';
+            }
+            $result .='
+            <button class="continueShopping" onclick="closeCartModal()">Continuar Comprando</button>
+            ';
+        }
+
+        return $result;
     }
 }

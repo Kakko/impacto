@@ -10,7 +10,7 @@ if(ENVIRONMENT == 'development') {
 	$config['dbname'] = 'impacto';
 	$config['host'] = 'localhost';
 	$config['dbuser'] = 'root';
-	$config['dbpass'] = 'root123';
+	$config['dbpass'] = 'root1234';
 } else {
 	define("BASE_URL", "http://localhost/estoque/");
 	$config['dbname'] = 'nova_loja';

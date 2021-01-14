@@ -17,12 +17,287 @@ $btn-bckg: #c3e6f8;
     margin: 0;
     padding: 0;
 }
+
 .loginModal {
-    width: 300px;
+    // display: none;
+    width: 0;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(0,0,0,0.2);
+    right: 0;
+    transition: 0.5s;
+    border-radius: 5px;
+    z-index: 10;
+    overflow: hidden;
+    .formArea {
+        width: 25%;
+        height: 100%;
+        background-color: #FFF;
+        float: right;
+        .loginData {
+            width: 70%;
+            height: 300px;
+            margin-top: 70px;
+            margin-left: 30px;
+            span {
+                font-family: 'Sora';
+                font-weight: 600;
+                font-size: 24px;
+            }
+            .loginInput {
+                width: 90%;
+                height: 35px;
+                border-radius: 4px;
+                border: 1px solid #4C7993;
+                margin-top: 15px;
+                font-family: 'Sora';
+                font-size: 16px;
+                color: #808b92;
+                padding-left: 10px;
+            }
+            p {
+                color: #808b92;
+                font-family: 'sora';
+                font-size: 14px;
+            }
+            .loginButton {
+                width: 90%;
+                height: 55px;
+                background-color: #7FCAF5;
+                color: #FFF;
+                border-radius: 8px;
+                border: none;
+                font-family: 'Sora';
+                font-size: 18px;
+            }
+        }
+        .loginFooter {
+            width: 100%;
+            height: 70px;
+            margin-top: 525px;
+            padding-left: 30px;
+            font-family: 'Sora';
+            font-size: 16px;
+            a {
+                color: #000;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+.registerModal {
+    width: 0;
     height: 100vh;
     position: absolute;
-    background-color: lavender;
+    overflow: hidden;
     right: 0;
+    z-index: 20;
+    transition: .5s;
+    background-color: #FFF;
+    .loginData {
+        width: 70%;
+        height: 300px;
+        margin-top: 70px;
+        margin-left: 30px;
+        span {
+            font-family: 'Sora';
+            font-weight: 600;
+            font-size: 24px;
+        }
+        .loginInput {
+            width: 90%;
+            height: 35px;
+            border-radius: 4px;
+            border: 1px solid #4C7993;
+            margin-top: 15px;
+            font-family: 'Sora';
+            font-size: 16px;
+            color: #808b92;
+            padding-left: 10px;
+        }
+        p {
+            color: #808b92;
+            font-family: 'sora';
+            font-size: 14px;
+        }
+        .loginButton {
+            width: 90%;
+            height: 55px;
+            background-color: #7FCAF5;
+            color: #FFF;
+            border-radius: 8px;
+            border: none;
+            font-family: 'Sora';
+            font-size: 18px;
+        }
+    }
+    .loginFooter {
+        width: 100%;
+        height: 70px;
+        margin-top: 500px;
+        padding-left: 30px;
+        font-family: 'Sora';
+        font-size: 16px;
+        a {
+            color: #000;
+            font-weight: bold;
+        }
+    }
+}
+
+.cartModal {
+    width: 0;
+    height: 100vh;
+    position: absolute;
+    overflow: hidden;
+    right: 0;
+    z-index: 20;
+    transition: .5s;
+    background-color: #FFF;
+    // background-color: lightgreen;
+    box-shadow: 0 0 10px #000;
+    .productsArea {
+        width: 85%;
+        height: 60vh;
+        margin: auto;
+        margin-top: 100px;
+        background-color: #FFF;
+        // box-shadow: inset  0 -60px 100px -60px #FFF;
+        overflow: auto;
+        .cartTitle {
+            font-family: 'Sora';
+            font-weight: 600;
+            font-size: 24px;
+            color: $text-color;
+            margin-bottom: 20px;
+        }
+        .cartProducts {
+            width: 100%;
+            height: 140px;
+            margin-bottom: 10px;
+            .frontImage {
+                width: 25%;
+                height: 100%;
+                float: left;
+                img {
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+            .cartInfoProduct {
+                width: 55%;
+                height: 100%;
+                float: left;
+                .cartTitleProduct {
+                    font-family: 'Sora';
+                    font-size: 16px;
+                    color: $text-color;
+                    font-weight: 600;
+                    padding-left: 20px;
+                }
+                .cartAuthorProduct {
+                    font-family: 'Sora';
+                    font-weight: 400;
+                    font-size: 14px;
+                    color: $select-border;
+                    padding-left: 20px;
+                }
+                .amount {
+                    font-family: 'Sora';
+                    font-size: 14px;
+                    color: $select-border;
+                    margin-left: 20px;
+                    margin-top: 15px;
+                }
+                .changeAmount {
+                    width: 60%;
+                    height: 35px;
+                    // background-color: red;
+                    margin-left: 20px;
+                    margin-top: 5px;
+                    .lowerAmount{
+                        width: 25%;
+                        height: 100%;
+                        float: left;
+                        background-color: #F1F1F1;
+                        border-top-left-radius: 8px;
+                        border-bottom-left-radius: 8px;
+                        cursor: pointer;
+                        img {
+                            margin-left: 8px;
+                            margin-top: 17px;
+                        }
+                    }
+                    .actualAmount {
+                        width: 48%;
+                        height: 95%;
+                        float: left;
+                        border: 1px solid #F1F1F1;
+                        text-align: center;
+                        outline: none;
+
+                    }
+                    .raiseAmount {
+                        width: 25%;
+                        height: 100%;
+                        float: left;
+                        background-color: #F1F1F1;
+                        border-top-right-radius: 8px;
+                        border-bottom-right-radius: 8px;
+                        cursor: pointer;
+                        img {
+                            margin-left: 8px;
+                            margin-top: 10px;
+                        }
+                    }
+                }
+            }
+            .cartAction {
+                width: 10%;
+                height: 100%;
+                float: left;
+                img {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+    .subTotal {
+        color: $default-color;
+        font-family: 'Sora';
+        font-weight: 500;
+        font-size: 28px;
+        margin-left: 30px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+    .closeCart {
+        width: 80%;
+        height: 66px;
+        background: linear-gradient(93.74deg, #6CF598 0%, rgba(127, 202, 245, 1) 100%);
+        color: #FFF;
+        border-radius: 8px;
+        font-family: 'Sora';
+        font-size: 18px;
+        border: none;
+        margin-left: 10%;
+    }
+    .continueShopping {
+        width: 80%;
+        height: 66px;
+        background-color: #E4F5FE;
+        color: $default-color;
+        border-radius: 8px;
+        font-family: 'Sora';
+        font-size: 18px;
+        font-weight: 600;
+        border: none;
+        margin-left: 10%;
+        border-radius: 8px;
+        margin-top: 10px;
+        cursor: pointer;
+    }
 }
 
 .headerArea {
@@ -44,7 +319,7 @@ $btn-bckg: #c3e6f8;
         }
     }
     .headerMenu {
-        width: 48%;
+        width: 40%;
         height: 70px;
         float: left;
         ul {
@@ -65,9 +340,10 @@ $btn-bckg: #c3e6f8;
         }
     }
     .userHeader {
-        width: 8%;
+        width: 20%;
         height: 70px;
         float: left;
+        padding-right: 10px;
         span {
             line-height: 70px;
             font-family: 'Sora';
@@ -75,9 +351,12 @@ $btn-bckg: #c3e6f8;
             font-style: normal;
             font-size: 18px;
             color: $default-color;
-        }
-        img {
-            padding-left: 5px;
+            float: right;
+            img {
+                float: right;
+                margin-top: 30px;
+                padding-left: 10px;
+            }
         }
     }
     .userCartHeader {
@@ -89,6 +368,23 @@ $btn-bckg: #c3e6f8;
             height: 57px;
             line-height: 70px;
             padding-left: 20px;
+            cursor: pointer;
+        }
+        #cardCircle {
+            width: 38px;
+            height: 38px;
+            position: absolute;
+            border-radius: 25px;
+            background-image: url('../icons/bag-circle-icon.svg');
+            background-repeat: no-repeat;
+            margin-top: -25px;
+            margin-left: 5px;
+            color: #FFF;
+            font-family: 'Sora';
+            font-weight: 400;
+            font-size: 16px;
+            padding-top: 9px;
+            padding-left: 14px;
         }
     }
     .titleBrand {
@@ -112,7 +408,7 @@ $btn-bckg: #c3e6f8;
         #headerButton {
             width: 387px;
             height: 66px;
-            background: linear-gradient(93.74deg, #6CF598 0%, rgba(127, 202, 245, 0.9) 100%);
+            background: linear-gradient(93.74deg, #6CF598 0%, rgba(127, 202, 245, 1) 100%);
             color: #FFF;
             border-radius: 8px;
             font-size: 20px;
@@ -122,6 +418,50 @@ $btn-bckg: #c3e6f8;
         }
     }
 }
+.userDropDown {
+    width: 210px;
+    height: 200px;
+    position: absolute;
+    z-index: 999;
+    top: 80px;
+    left: 69%;
+    background-image: url(../images/baloon-userDropDown.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    // display: none;
+    ul {
+        list-style: none;
+        margin-top: 30px;
+        li {
+            margin-bottom: 20px;
+            font-family: 'Sora';
+            font-style: normal;
+            font-size: 16px;
+            padding-left: 57px;
+            line-height: 25px;
+            &:nth-child(1){
+                background-image: url(../icons/orders-icon.svg);
+                background-repeat: no-repeat;
+                background-position-x: 20px;
+            }
+            &:nth-child(2){
+                background-image: url(../icons/heart-icon.svg);
+                background-repeat: no-repeat;
+                background-position-x: 20px;
+            }
+            &:nth-child(3){
+                background-image: url(../icons/useraccount-icon.svg);
+                background-repeat: no-repeat;
+                background-position-x: 20px;
+            }
+        }
+        a {
+            text-decoration: none;
+            color: $default-color;
+        }
+    }
+}
+
 .frontFilter {
     width: 324px;
     min-height: 444px;

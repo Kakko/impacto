@@ -74,7 +74,6 @@ function showDiscount() {
 
 function saveProduct() {
     let form = document.getElementById('newProduct')
-
     $.ajax({
         type: 'POST',
         url: '',
@@ -107,11 +106,6 @@ function editProduct(id){
         $('#editProduct').html(data)
     })
     $('#updProduct').modal('show')
-    adjust();
-}
-
-function adjust() {
-    alert('modal aberto')
 }
 
 function deleteImg(id) {

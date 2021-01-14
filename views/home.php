@@ -1,3 +1,8 @@
+<?php
+if(!isset($_SESSION)){
+    session_start(); 
+}
+?>
 <!DOCTYPE html>
 <html lang="pt_br">
 <head>
@@ -9,8 +14,47 @@
     <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/home.js"></script>
 </head>
 <body>
-    <div class="loginModal">
-            
+    <!-- <?php echo session_status(); ?> -->
+    <!-- <?php echo $_SESSION['cUser']; ?> -->
+    <!-- MODAL DE LOGIN -->
+    <div class="loginModal" id="loginModal">
+        <div class="formArea">
+            <form method="POST" id="loginForm">
+                <div class="loginData">
+                    <span>Login</span><br/>
+                    <input type="text" name="user_action" value="loginAction" hidden>
+                    <input type="email" class="loginInput" name="loginEmail" placeholder="E-mail"><br/>
+                    <input type="password" class="loginInput" name="loginPassword" placeholder="Senha"><br/><br/>
+                    <p>Esqueci a Senha</p><br/>
+                    <input type="submit" class="loginButton" value="Entrar"><br/><br/>
+                    <p style="font-size: 16px">Ainda não tem uma conta?<br/><p style="color: #000; cursor: pointer" onclick="registerModel()">Registre-se</p></p>
+                </div>
+            </form>
+            <div class="loginFooter">
+                <p>Ao fazer login, você concorda com a <br/><a href="#">Política de Privacidade</a> e com os <br/><a href="#">Termos de Uso</a> do site.</p>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL DE REGISTRO -->
+    <div class="registerModal" id="registerModal">
+        <form method="POST" id="registerForm">
+            <div class="loginData">
+                <span>Registre-se</span><br/>
+                <input type="text" name="user_action" value="register" hidden>
+                <input type="text" class="loginInput" name="name" placeholder="Nome"><br/>
+                <input type="email" class="loginInput" name="email" placeholder="E-mail"><br/>
+                <input type="password" class="loginInput" name="password" placeholder="Senha"><br/><br/>
+                <input type="submit" class="loginButton" value="Cadastrar"><br/><br/>
+            </div>
+        </form>
+        <p style="padding-left: 30px; font-family: 'Arial', font-size: 16px; cursor: pointer" onclick="returnLogin()">Voltar</p>
+        <div class="loginFooter">
+            <p>Ao se cadastrar, você concorda com a <br/><a href="#">Política de Privacidade</a> e com os <br/><a href="#">Termos de Uso</a> do site.</p>
+        </div>
+    </div>
+    <!-- MODAL DO CARRINHO -->
+    <div class="cartModal" id="cartModal">
+        
     </div>
     <header class="headerArea">
         <div class="headerBrand">
@@ -24,12 +68,17 @@
                 <!-- <li>Blog</li> -->
             </ul>
         </div>
+        <input type="text" value="<?php echo session_id(); ?>" id="guest_id" hidden>
         <div class="userHeader">
-            <!-- <span>Olá <strong>Estranho</strong></span><img src="<?php echo BASE_URL; ?>assets/icons/arrowdown-icon.svg"> -->
-            <span onclick="openLoginModal()" style="cursor: pointer">Login</span>
+            <?php if(!empty($_SESSION['cUser'])): ?>
+                <span style="cursor: pointer" onclick="userDropDown()">Olá, <strong><?php echo $clients['name']; ?></strong><img src="<?php echo BASE_URL; ?>assets/icons/arrowdown-icon.svg"></span>
+            <?php else: ?>
+                <span onclick="openLoginModal()" style="cursor: pointer">Conecte ou Registre-se</span>
+            <?php endif; ?>
         </div>
         <div class="userCartHeader">
-            <img src="<?php echo BASE_URL; ?>assets/icons/bag-icon.svg" id="cart">
+            <img src="<?php echo BASE_URL; ?>assets/icons/bag-icon.svg" id="cart" onclick="cartModal()">
+            <div id="cardCircle"></div>
         </div>
         <div class="titleBrand">
             <h1>CLUBE IMPACTO</h1>
@@ -70,11 +119,11 @@
                 <?php foreach ($products as $info): ?>
                     <div class="products">
                         <div class="imgProduct">
-                            <img src="<?php echo BASE_URL; ?>assets/images/book-preview.png">
+                            <img src="<?php echo BASE_URL; ?>assets/images/products/<?php echo $info['url']; ?>" style="height: 100%">
                         </div>
                         <div class="infoProduct">
                             <span class="prodTitle"><?php echo $info['name']; ?></span><br/>
-                            <span class="authorName"><?php echo $info['author']; ?></span>
+                            <span class="authorName"><?php echo $info['author_name']; ?></span>
                         </div>
                         <div class="priceProduct">
                             <?php if($info['has_discount'] === 'Sim' ): ?>
@@ -84,7 +133,7 @@
                                 <span class="descPrice">R$<?php echo $info['price']; ?></span><br/>
                             <?php endif; ?>
                         </div>
-                        <button class="sendToCart">Adicionar à sacola</button>
+                        <button class="sendToCart" onclick="sendToCart(<?php echo $info['id']; ?>)">Adicionar à sacola</button>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -251,5 +300,42 @@
             </div>
         </div>
     </footer>
+    <div class="userDropDown" id="userDropDown" hidden>
+        <ul>
+            <li><a href="#">Meus Pedidos</a></li>
+            <li><a href="#">Favoritos</a></li>
+            <li><a href="<?php echo BASE_URL; ?>clients/editar?id=<?php echo $_SESSION['cUser']; ?>">Conta</a></li>
+            <li><a href="<?php echo BASE_URL; ?>home/logout">Sair</a></li>
+        </ul>
+    </div>
+    <script>
+        var modal = document.getElementById('loginModal')
+        window.onclick = function(event) {
+            if(event.target == modal){
+                modal.style.width = "0";
+            }
+        }
+
+        window.onload = function(){
+            let guest = document.getElementById('guest_id').value
+            var formData = new FormData();
+            formData.append('guest_id', guest)
+            formData.append('user_action', 'getCartNumber')
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', window.location.href, true);
+            xhr.onreadystatechange = () => {
+                if(xhr.readyState == 4) {
+                    if(xhr.status == 200){
+                        document.getElementById('cardCircle').innerHTML = xhr.responseText;
+                    } else {
+                        console.log('deu algum erro')
+                    }
+                }
+            }
+            xhr.send(formData)
+
+        }
+    </script>
 </body>
 </html>

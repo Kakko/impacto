@@ -9,7 +9,7 @@ class Clients extends Model {
         $sql->execute();
     }
 
-    public function loginClient($email, $password){
+    public function loginClient($email, $password, $userSessionId){
         $sql = $this->db->prepare("SELECT * FROM clients WHERE email = :email AND password = :password");
         $sql->bindValue(":email", $email);
         $sql->bindValue(":password", md5($password));
@@ -18,6 +18,12 @@ class Clients extends Model {
         if($sql->rowCount() > 0){
             $row = $sql->fetch();
             $_SESSION['cUser'] = $row['id'];
+
+            $sql = $this->db->prepare("UPDATE guest_user SET registered_user_id = :registered_user_id WHERE guest_user_id = :guest_user_id");
+            $sql->bindValue(":registered_user_id", $_SESSION['cUser']);
+            $sql->bindValue(":guest_user_id", $userSessionId);
+            $sql->execute();
+
             return true;
         } else {
             return false;
@@ -319,6 +325,55 @@ class Clients extends Model {
         </div>
         <button class="addClientAddress" onclick="addNewClientAddress('.$id.')">Salvar</button>';
         
+        return $data;
+    }
+
+    public function fetchClientAddress($id){
+        $sql = $this->db->prepare("SELECT client_address.*, estados.*, cidades.* FROM client_address
+                                    LEFT JOIN estados ON (estados.id = client_address.state_id)
+                                    LEFT JOIN cidades ON (cidades.id = client_address.city_id)
+                                    WHERE client_address.client_id = :id");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $info = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        return $info;
+    }
+
+    public function updatePurchase($id, $cep, $finalPrice){
+
+        $sql = $this->db->prepare("SELECT * FROM user_purchase WHERE user_id = :id");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $sql = $this->db->prepare("UPDATE user_purchase SET user_id = :id, user_cep = :cep, purchase_value = :finalPrice, approved = 'N', data_cadastro = now()");
+            $sql->bindValue(":id", $id);
+            $sql->bindValue(":cep", $cep);
+            $sql->bindValue(":finalPrice", $finalPrice);
+            $sql->execute();
+        } else {
+            $sql = $this->db->prepare("INSERT INTO user_purchase SET user_id = :id, user_cep = :cep, purchase_value = :finalPrice, approved = 'N', data_cadastro = now()");
+            $sql->bindValue(":id", $id);
+            $sql->bindValue(":cep", $cep);
+            $sql->bindValue(":finalPrice", $finalPrice);
+            $sql->execute();
+        }
+    }
+
+    public function purchaseDeets($id) {
+        $data = '';
+        $sql = $this->db->prepare("SELECT * FROM user_purchase WHERE user_id = :id");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $data = $sql->fetch(PDO::FETCH_ASSOC);
+        }
+
         return $data;
     }
 }

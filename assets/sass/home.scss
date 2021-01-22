@@ -727,13 +727,16 @@ $btn-bckg: #c3e6f8;
             width: 50%;
             height: 100%;
             float: left;
-            img {
-                padding-right: 30px;
+            a {
+                img {
+                    margin-top: 180px;
+                    margin-right: 10%;
+                }
+                &:nth-child(1){
+                    margin-left: 20%;
+                }
             }
-            img:nth-child(1) {
-                margin-top: 20%;
-                margin-left: 45%;
-            }
+            
         }
     }
 }
@@ -985,19 +988,22 @@ $btn-bckg: #c3e6f8;
                     margin-left: 40%;
                     margin-top: 5%;
                 }
-    
             }
             .footerSocial {
                 width: 50%;
                 height: 100%;
                 float: left;
-                img {
-                    padding-right: 30px;
+                background-color: red;
+                a {
+                    img {
+                        padding-right: 30px;
+                    }
+                    img:nth-child(1) {
+                        margin-top: 20%;
+                        margin-left: 45%;
+                    }
                 }
-                img:nth-child(1) {
-                    margin-top: 20%;
-                    margin-left: 45%;
-                }
+
             }
         }
     }

@@ -143,12 +143,16 @@
                             </select>
                         </div>
                         <div class="col-sm-2">
-                            <label>Largura:</label>
+                            <label>Largura (Em CM):</label>
                             <input type="number" step=".01" class="form-control form-control-sm" name="width">
                         </div>
                         <div class="col-sm-2">
-                            <label>Altura:</label>
+                            <label>Altura (Em CM):</label>
                             <input type="number" step=".01" class="form-control form-control-sm" name="height">
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Peso (Em KG):</label>
+                            <input type="number" class="form-control form-control-sm" name="weight">
                         </div>
                         <div class="col-sm-2">
                             <label>Tem Desconto:</label>
@@ -166,7 +170,7 @@
                             <input type="number" class="form-control form-control-sm" name="amount">
                         </div>
                         <div class="col-sm">
-                            <label>Número de Páginas</label>
+                            <label>Nº de Páginas</label>
                             <input type="number" class="form-control form-control-sm" name="number_pages">
                         </div>
                     </div>

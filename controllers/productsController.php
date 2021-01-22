@@ -34,6 +34,7 @@ class productsController extends Controller {
                 $language = addslashes($_POST['language']);
                 $width = addslashes($_POST['width']);
                 $height = addslashes($_POST['height']);
+                $weigth = addslashes($_POST['weight']);
                 $hasDiscount = addslashes($_POST['hasDiscount']);
                 if($hasDiscount == 'Não'){
                     $discount = 0;
@@ -48,7 +49,7 @@ class productsController extends Controller {
                     $url = $_FILES['upload_arquivos'];
                 }
 
-                echo $product->addProduct($name, $category, $author, $price, $type, $amazonLink, $googleLink, $edition_number, $edition_year, $language, $width, $height, $hasDiscount, $discount, $amount, $number_pages, $desc, $url);
+                echo $product->addProduct($name, $category, $author, $price, $type, $amazonLink, $googleLink, $edition_number, $edition_year, $language, $width, $height, $weigth, $hasDiscount, $discount, $amount, $number_pages, $desc, $url);
                 header('Location: '.BASE_URL.'products');
                 exit;
             }
@@ -88,6 +89,7 @@ class productsController extends Controller {
                 $language = addslashes($_POST['language']);
                 $width = addslashes($_POST['width']);
                 $height = addslashes($_POST['height']);
+                $weigth = addslashes($_POST['weight']);
                 $hasDiscount = addslashes($_POST['hasDiscount']);
                 if($hasDiscount == 'Não'){
                     $discount = 0;
@@ -98,7 +100,7 @@ class productsController extends Controller {
                 $desc = addslashes($_POST['desc']);
                 $number_pages = addslashes($_POST['number_pages']);
 
-                $product->updProduct($id, $name, $category, $author, $price, $type, $amazonLink, $googleLink, $edition_number, $edition_year, $language, $width, $height, $hasDiscount, $discount, $amount, $number_pages, $desc);
+                $product->updProduct($id, $name, $category, $author, $price, $type, $amazonLink, $googleLink, $edition_number, $edition_year, $language, $width, $height, $weigth, $hasDiscount, $discount, $amount, $number_pages, $desc);
                 // header("Location: ".BASE_URL."products");
                 exit;
             }

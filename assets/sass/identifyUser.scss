@@ -33,7 +33,7 @@ $btn-bckg: #c3e6f8;
     .purchaseSteps {
         width: 100%;
         height: 50px;
-        background-image: url(../images/Flags-1.svg);
+        background-image: url(../images/Flags-2.svg);
         background-size: cover;
         margin-top: 10px;
         overflow: auto;
@@ -84,16 +84,16 @@ $btn-bckg: #c3e6f8;
             }
         }
         .cartProductsArea{
-            width: 100%;
+            width: 33%;
             height: 95%;
             overflow: auto;
-            // box-shadow: inset 0px -50px 8px -20px #FFF;
+            float: left;
             .productUnit {
                 width: 100%;
                 height: 150px;
                 margin-bottom: 15px;
                 .showRegisteredCartProducts {
-                    width: 33%;
+                    width: 100%;
                     height: 150px;
                     float: left;
                     .cartProductImage {
@@ -132,43 +132,10 @@ $btn-bckg: #c3e6f8;
                         .changeAmount {
                             width: 60%;
                             height: 35px;
-                            margin-left: 20px;
+                            margin-left: 50px;
                             margin-top: 5px;
-                            .lowerAmount{
-                                width: 25%;
-                                height: 100%;
-                                float: left;
-                                background-color: #F1F1F1;
-                                border-top-left-radius: 8px;
-                                border-bottom-left-radius: 8px;
-                                cursor: pointer;
-                                img {
-                                    margin-left: 18px;
-                                    margin-top: 17px;
-                                }
-                            }
-                            .actualAmount {
-                                width: 48%;
-                                height: 95%;
-                                float: left;
-                                border: 1px solid #F1F1F1;
-                                text-align: center;
-                                outline: none;
-        
-                            }
-                            .raiseAmount {
-                                width: 25%;
-                                height: 100%;
-                                float: left;
-                                background-color: #F1F1F1;
-                                border-top-right-radius: 8px;
-                                border-bottom-right-radius: 8px;
-                                cursor: pointer;
-                                img {
-                                    margin-left: 18px;
-                                    margin-top: 10px;
-                                }
-                            }
+                            color: $text-color;
+                            font-family: 'Sora';
                         }
                     }
                     .cartProductAction {
@@ -177,36 +144,77 @@ $btn-bckg: #c3e6f8;
                         float: left;
                     }
                 }
-                .productPrice {
-                    width: 33%;
-                    height: 50px;
-                    float: left;
-                    margin-top: 80px;
-                    .priceText {
-                        color: $text-color;
-                        font-family: 'Sora';
-                        font-weight: 500;
-                        font-size: 20px;
-                    }
-                    .hasDiscount {
-                        font-family: 'Sora';
-                        font-size: 16px;
-                        text-decoration: line-through;
-                        color: $select-border;
-                    }
-                }
-                .finalPrice {
-                    width: 33%;
-                    height: 50px;
-                    float: left;
-                    margin-top: 100px;
-                    font-family: 'Sora';
-                    font-style: normal;
-                    font-weight: 500;
-                    font-size: 20px;
-                    color: $text-color;
+            }
+        }
+        .shipmentDeets {
+            width: 66%;
+            height: 95%;
+            float: left;
+            .receiverData {
+                width: 50%;
+                height: 40%;
+                .receiverInput{
+                    width: 95%;
+                    height: 35px;
+                    border: 1px solid $text-color;
+                    box-sizing: border-box;
+                    border-radius: 4px;
+                    margin-bottom: 15px;
                 }
             }
+            .addressCardArea {
+                width: 50%;
+                height: 60%;
+                .title {
+                    color: $text-color;
+                    font-family: 'Sora';
+                    font-size: 16px;
+                }
+                .selectAddress{
+                    width: 10%;
+                    height: 100%;
+                    float: left;
+                    .checkAddress {
+                        margin-top: 40px;
+                        margin-left: 10px;
+                    }
+                }
+                .addressCard {
+                    width: 85%;
+                    height: 100px;
+                    background: linear-gradient(93.74deg, rgba(127, 202, 245, 0.2) 0%, rgba(127, 202, 245, 0.1) 100%);
+                    margin-bottom: 10px;
+                    border: 1px solid $default-color;
+                    box-sizing: border-box;
+                    border-radius: 8px;
+                    float: left;
+                    .addressInfo {
+                        color: $text-color;
+                        font-family: 'Sora';
+                        font-size: 16px;
+                        padding: 10px;
+                        padding-top: 25px;
+                    }
+                }
+                .secondaryAddressCard {
+                    width: 85%;
+                    float: left;
+                    height: 100px;
+                    background: #ECEEEF;
+                    margin-bottom: 10px;
+                    border: 1px solid $select-border;
+                    box-sizing: border-box;
+                    border-radius: 8px;
+                    .addressInfo {
+                        color: $select-border;
+                        font-family: 'Sora';
+                        font-size: 16px;
+                        padding: 10px;
+                        padding-top: 25px;
+                    }
+                }
+            }
+            
         }
     }
     .cartDetails {

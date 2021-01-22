@@ -108,7 +108,7 @@ function removeProductCart(id) {
     }
  }
 
- function proceedToFinish(id) {
+ function proceedToFinish() {
     window.location.href = "home/cart"
  }
 

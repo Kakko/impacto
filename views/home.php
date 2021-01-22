@@ -15,6 +15,7 @@ if(!isset($_SESSION)){
 </head>
 <body>
     <!-- <?php echo session_status(); ?> -->
+    <!-- <?php echo session_id(); ?> -->
     <!-- <?php echo $_SESSION['cUser']; ?> -->
     <!-- MODAL DE LOGIN -->
     <div class="loginModal" id="loginModal">
@@ -25,6 +26,7 @@ if(!isset($_SESSION)){
                     <input type="text" name="user_action" value="loginAction" hidden>
                     <input type="email" class="loginInput" name="loginEmail" placeholder="E-mail"><br/>
                     <input type="password" class="loginInput" name="loginPassword" placeholder="Senha"><br/><br/>
+                    <input type="text" name="userSessionID" value="<?php echo session_id(); ?>" hidden>
                     <p>Esqueci a Senha</p><br/>
                     <input type="submit" class="loginButton" value="Entrar"><br/><br/>
                     <p style="font-size: 16px">Ainda não tem uma conta?<br/><p style="color: #000; cursor: pointer" onclick="registerModel()">Registre-se</p></p>
@@ -294,9 +296,9 @@ if(!isset($_SESSION)){
                 <img src="<?php echo BASE_URL; ?>assets/images/logo-impacto.svg">
             </div>
             <div class="footerSocial">
-                <img src="<?php echo BASE_URL; ?>assets/icons/linkedin-icon.svg">
-                <img src="<?php echo BASE_URL; ?>assets/icons/instagram-icon.svg">
-                <img src="<?php echo BASE_URL; ?>assets/icons/facebook-icon.svg">
+                <a href="https://www.linkedin.com/company/impacto-educacional-editora/"><img src="<?php echo BASE_URL; ?>assets/icons/linkedin-icon.svg"></a>
+                <a href="https://www.instagram.com/impactoeducacional/"><img src="<?php echo BASE_URL; ?>assets/icons/instagram-icon.svg"></a>
+                <a href="https://www.facebook.com/editoraimpactoeducacional/"><img src="<?php echo BASE_URL; ?>assets/icons/facebook-icon.svg"></a>
             </div>
         </div>
     </footer>

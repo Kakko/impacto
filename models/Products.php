@@ -1,7 +1,7 @@
 <?php
 class Products extends Model {
 
-    public function addProduct($name, $category, $author, $price, $type, $amazonLink, $googleLink, $edition_number, $edition_year, $language, $width, $height, $hasDiscount, $discount, $amount, $number_pages, $desc, $url){
+    public function addProduct($name, $category, $author, $price, $type, $amazonLink, $googleLink, $edition_number, $edition_year, $language, $width, $height, $weight, $hasDiscount, $discount, $amount, $number_pages, $desc, $url){
         $array = array();
 
         $sql = $this->db->prepare("INSERT INTO products SET name = :name, price = :price, has_discount = :has_discount, discount = :discount, author = :author, category = :category, amount = :amount, type = :type, data_cadastro = now()");
@@ -16,13 +16,14 @@ class Products extends Model {
         if($sql->execute()){
             $product_id = $this->db->lastInsertID();
 
-            $sql = $this->db->prepare("INSERT INTO product_details SET product_id = :product_id, edition_number = :edition_number, edition_year = :edition_year, language = :language, width = :width, height = :height, number_pages = :number_pages, description = :description, amazon_link = :amazon_link, google_link = :google_link");
+            $sql = $this->db->prepare("INSERT INTO product_details SET product_id = :product_id, edition_number = :edition_number, edition_year = :edition_year, language = :language, width = :width, height = :height, weight = :weight, number_pages = :number_pages, description = :description, amazon_link = :amazon_link, google_link = :google_link");
             $sql->bindValue(":product_id", $product_id);
             $sql->bindValue(":edition_number", $edition_number);
             $sql->bindValue(":edition_year", $edition_year);
             $sql->bindValue(":language", $language);
             $sql->bindValue(":width", $width);
             $sql->bindValue(":height", $height);
+            $sql->bindValue(":weight", $weight);
             $sql->bindValue(":number_pages", $number_pages);
             $sql->bindValue(":description", $desc);
             $sql->bindValue(":amazon_link", $amazonLink);
@@ -107,13 +108,17 @@ class Products extends Model {
                         <label>Idioma:</label>
                         <input type="text" class="form-control form-control-sm showProduct" value="'.$dados['language'].'" readonly>
                     </div>
-                    <div class="col-sm">
-                        <label>Largura:</label>
-                        <input type="text" class="form-control form-control-sm showProduct" value="'.$dados['width'].' cm" readonly>
+                    <div class="col-sm-2">
+                    <label>Largura (Em CM):</label>
+                    <input type="number" step=".01" class="form-control form-control-sm showProduct" name="width" value="'.$dados['width'].'">
                     </div>
-                    <div class="col-sm">
-                        <label>Altura:</label>
-                        <input type="text" class="form-control form-control-sm showProduct" value="'.$dados['height'].' cm" readonly>
+                    <div class="col-sm-2">
+                        <label>Altura (Em CM):</label>
+                        <input type="number" step=".01" class="form-control form-control-sm showProduct" name="height" value="'.$dados['height'].'">
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Peso (Em KG):</label>
+                        <input type="number" class="form-control form-control-sm showProduct" name="weight" value="'.$dados['weight'].'">
                     </div>
                 </div>
                 <br/>
@@ -257,12 +262,16 @@ class Products extends Model {
                         </select>
                     </div>
                     <div class="col-sm-2">
-                        <label>Largura:</label>
+                        <label>Largura (Em CM):</label>
                         <input type="number" step=".01" class="form-control form-control-sm" name="width" value="'.$info['width'].'">
                     </div>
                     <div class="col-sm-2">
-                        <label>Altura:</label>
+                        <label>Altura (Em CM):</label>
                         <input type="number" step=".01" class="form-control form-control-sm" name="height" value="'.$info['height'].'">
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Peso (Em KG):</label>
+                        <input type="number" class="form-control form-control-sm" name="weight" value="'.$info['weight'].'">
                     </div>
                     <div class="col-sm-2">
                         <label>Tem Desconto:</label>
@@ -329,7 +338,7 @@ class Products extends Model {
         return $data;
     }
 
-    public function updProduct($id, $name, $category, $author, $price, $type, $amazonLink, $googleLink, $edition_number, $edition_year, $language, $width, $height, $hasDiscount, $discount, $amount, $number_pages, $desc){
+    public function updProduct($id, $name, $category, $author, $price, $type, $amazonLink, $googleLink, $edition_number, $edition_year, $language, $width, $height, $weight, $hasDiscount, $discount, $amount, $number_pages, $desc){
         $sql = $this->db->prepare("UPDATE products SET name = :name, price = :price, has_discount = :has_discount, discount = :discount, author = :author, category = :category, amount = :amount, type = :type, data_cadastro = now() WHERE id = :id");
         $sql->bindValue(":id", $id);
         $sql->bindValue(":name", $name);
@@ -341,13 +350,14 @@ class Products extends Model {
         $sql->bindValue(":amount", $amount);
         $sql->bindValue(":type", $type);
         if($sql->execute()){
-            $sql = $this->db->prepare("UPDATE product_details SET product_id = :product_id, edition_number = :edition_number, edition_year = :edition_year, language = :language, width = :width, height = :height, number_pages = :number_pages, description = :description, amazon_link = :amazon_link, google_link = :google_link WHERE product_id = :product_id");
+            $sql = $this->db->prepare("UPDATE product_details SET product_id = :product_id, edition_number = :edition_number, edition_year = :edition_year, language = :language, width = :width, height = :height, weight = :weight, number_pages = :number_pages, description = :description, amazon_link = :amazon_link, google_link = :google_link WHERE product_id = :product_id");
             $sql->bindValue(":product_id", $id);
             $sql->bindValue(":edition_number", $edition_number);
             $sql->bindValue(":edition_year", $edition_year);
             $sql->bindValue(":language", $language);
             $sql->bindValue(":width", $width);
             $sql->bindValue(":height", $height);
+            $sql->bindValue(":weight", $weight);
             $sql->bindValue(":number_pages", $number_pages);
             $sql->bindValue(":description", $desc);
             $sql->bindValue(":amazon_link", $amazonLink);
@@ -685,6 +695,7 @@ class Products extends Model {
     }
 
     public function removeProductCart($id, $userID) {
+
         $array = array();
 
         $sql = $this->db->prepare("SELECT itens_on_cart FROM guest_user WHERE itens_on_cart LIKE :id AND guest_user_id = :guest_user_id");
@@ -767,5 +778,97 @@ class Products extends Model {
         }
 
         return $result;
+    }
+
+    public function updGuestToRegisteredCart($id){
+        $sql = $this->db->prepare("SELECT * FROM guest_user WHERE registered_user_id = :id");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $data = $sql->fetch(PDO::FETCH_ASSOC);
+            
+            $products = explode(',', $data['itens_on_cart']);
+            
+            foreach($products as $prod){
+                $sql = $this->db->prepare("INSERT INTO user_cart SET user_id = :id, product_id = :product_id, qtd = :qtd, data_cadastro = now()");
+                $sql->bindValue(":id", $id);
+                $sql->bindValue(":product_id", $prod);
+                $sql->bindValue(":qtd", 1);
+                $sql->execute();
+            }
+
+            $sql = $this->db->prepare("DELETE FROM guest_user WHERE registered_user_id = :id");
+            $sql->bindValue(":id", $id);
+            $sql->execute();
+        }
+    }
+    public function showRegisteredCartProducts($id) {
+        $sql = $this->db->prepare("SELECT user_cart.*, product_images.url, products.*, product_author.name AS author_name FROM user_cart 
+                                    LEFT JOIN product_images ON (user_cart.product_id = product_images.product_id)
+                                    LEFT JOIN products ON (user_cart.product_id = products.id)
+                                    LEFT JOIN product_author ON (products.author = product_author.id)
+                                    WHERE user_id = :id");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $products = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return $products;
+    }
+
+    public function lowerProductAmount($id, $qtd){
+       
+        $sql = $this->db->prepare("UPDATE user_cart SET qtd = :qtd WHERE product_id = :id");
+        $sql->bindValue(":qtd", $qtd);
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+
+    }
+    public function raiseProductAmount($id, $qtd){
+
+        $sql = $this->db->prepare("UPDATE user_cart SET qtd = :qtd WHERE product_id = :id");
+        $sql->bindValue(":qtd", $qtd);
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+    }
+
+    public function chosenCEP($id, $cep_destino){
+        $sql = $this->db->prepare("UPDATE clients SET chosen_cep = :cep WHERE id = :id");
+        $sql->bindValue(":id", $id);
+        $sql->bindValue(":cep", $cep_destino);
+        $sql->execute();
+    }
+
+    public function updateFinalPrice($id){
+        $data = '';
+        $finalPrice = 0;
+        $sql = $this->db->prepare("SELECT user_cart.*, products.id AS prod_id, products.* FROM user_cart 
+                                    LEFT JOIN products ON (user_cart.product_id = products.id)
+                                    WHERE user_id = :id");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $info = $sql->fetchAll(PDO::FETCH_ASSOC);
+            
+            foreach($info as $i){
+                if($i['has_discount'] == 'Sim'){
+                    $finalPrice += ($i['price'] - ($i['price'] / 100 * $i['discount'])) * $i['qtd'];
+                } else {
+                    $finalPrice += $i['price'] * $i['qtd'];
+                }
+            }
+            
+            $data .='
+                <label>Total a pagar</label><br/>
+                <input type="text" value="'.$finalPrice.'" id="totalProductsPrice" hidden>
+                <div class="finalPrice">R$ '.number_format($finalPrice, 2, '.', '.').'</div>
+                <button class="buyout" onclick="proceedToIdentify()" disabled>Continuar</button>
+            ';
+        }
+
+        return $data;
     }
 }

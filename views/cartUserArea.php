@@ -82,4 +82,26 @@
     </div>
 </body>
 </html>
+<script>
+    function fetchFinalValue(){
+    var formData = new FormData();
+    formData.append('cart_action', 'updateFinalPrice')
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', window.location.href, true);
+    xhr.onreadystatechange = () => {
+        if(xhr.readyState == 4){
+            if(xhr.status == 200){
+                console.log(xhr.responseText)
+                document.getElementById('detailsArea').innerHTML = xhr.responseText
+            } else {
+                console.log('xiiii')
+            }
+        }
+    }
+    xhr.send(formData)
+    }
+
+    document.onload(fetchFinalValue())
+</script>
 <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/cart.js"></script>

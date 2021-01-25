@@ -116,51 +116,33 @@ function changeFinalValue(id, qtd){
     document.getElementById('finalPrice'+id).innerHTML = 'R$ '+price
 }
 
-function fetchFinalValue(){
-    var formData = new FormData();
-    formData.append('cart_action', 'updateFinalPrice')
+function proceedToIdentify(){
+    // let finalPrice = document.getElementById('finalPrice').innerText.split(' ')[1].replace(',', '.');
+    // let frete = document.getElementById('cepDestino').innerText.split(': ')[1];
+    // var formData = new FormData();
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', window.location.href, true);
-    xhr.onreadystatechange = () => {
-        if(xhr.readyState == 4){
-            if(xhr.status == 200){
-                console.log(xhr.responseText)
-                document.getElementById('detailsArea').innerHTML = xhr.responseText
-            } else {
-                console.log('xiiii')
-            }
-        }
-    }
-    xhr.send(formData)
-}
+    // formData.append('finalPrice', finalPrice)
+    // formData.append('cep', frete)
+    // formData.append('cart_action', 'updatePurchase')
 
-function proceedToIdentify($id){
-    let finalPrice = document.getElementById('finalPrice').innerText.split(' ')[1].replace(',', '.');
-    let frete = document.getElementById('cepDestino').innerText.split(': ')[1];
-    var formData = new FormData();
-
-    formData.append('finalPrice', finalPrice)
-    formData.append('cep', frete)
-    formData.append('cart_action', 'updatePurchase')
-
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', window.location.href, true);
-    xhr.onreadystatechange = () => {
-        if(xhr.readyState == 4){
-            if(xhr.status == 200){
-                console.log(xhr.responseText)
-            } else {
-                console.log('deu ruim')
-            }
-        }
-    }
-    xhr.send(formData)
+    // const xhr = new XMLHttpRequest();
+    // xhr.open('POST', window.location.href, true);
+    // xhr.onreadystatechange = () => {
+    //     if(xhr.readyState == 4){
+    //         if(xhr.status == 200){
+    //             console.log(xhr.responseText)
+    //         } else {
+    //             console.log('deu ruim')
+    //         }
+    //     }
+    // }
+    // xhr.send(formData)
 
     window.location.href="identification"
 }
-fetchFinalValue();
 
-function selectAddress() {
-    alert(' Selecionado ')
+function selectAddress(id) {
+    let cep = document.getElementById('addressInfo'+id).value
+
+    console.log(cep)
 }

@@ -49,24 +49,25 @@
                 <div class="addressCardArea">
                     <div class="title">Endereço de Entrega</div>
                     <?php foreach($clientAddress as $info): ?>
-                            <?php if($purchaseDeets['user_cep'] == $info['cep']): ?>
+                            <?php if($purchaseDeets['user_cep'] !== $info['cep']): ?>
                             <div class="addressCard">
-                                <div class="selectAddress">
-                                    <!-- <input type="checkbox" class="checkAddress" name="address"> -->
-                                    
-                                </div>
-                                <div class="addressInfo" onclick="selectAddress()">
+                                <div class="addressInfo">
+                                    <input type="text" id="addressInfo<?php echo $info['address_id']; ?>" value="<?php echo $info['cep']; ?>" hidden>
+                                    <div class="selectAddress">
+                                        <input type="radio" class="checkAddress" name="address" onchange="selectAddress(<?php echo $info['address_id']; ?>)">
+                                    </div>
                                     <?php echo $info['street']; ?>, <?php echo $info['address_number']; ?>, 
                                     <?php echo $info['complement']; ?> - <?php echo $info['neighborhood']; ?>, 
                                     <?php echo $info['cidade']; ?> / <?php echo $info['uf']; ?>
                                 </div>
                             </div>
                         <?php else: ?>
-                            <div class="secondaryAddressCard" onclick="selectAddress()">
-                                <div class="selectAddress">
-                                    <input type="checkbox" class="checkAddress" name="address">
-                                </div>
+                            <div class="addressCard">
                                 <div class="addressInfo">
+                                    <input type="text" value="<?php echo $info['cep']; ?>" id="addressInfo<?php echo $info['address_id']; ?>" hidden>
+                                    <div class="selectAddress">
+                                        <input type="radio" class="checkAddress" name="address">
+                                    </div>
                                     <?php echo $info['street']; ?>, <?php echo $info['address_number']; ?>, 
                                     <?php echo $info['complement']; ?> - <?php echo $info['neighborhood']; ?>, 
                                     <?php echo $info['cidade']; ?> / <?php echo $info['uf']; ?>
@@ -79,14 +80,20 @@
         </div>
         <div class="cartDetails">
             <div class="detailsArea">
-                
+                <label>Calcular Frete (Somente números)</label><br/>
+                <input type="number" class="calcShipment" id="freteValue" placeholder="CEP" onkeyup="calcularFrete(<?php echo $_SESSION['cUser']; ?>)">
+                <button style="margin-left: 10px" onclick="calcularFrete(<?php echo $_SESSION['cUser']; ?>)">Calcular</button><br/>
+                <div><a href="http://www.buscacep.correios.com.br/sistemas/buscacep/default.cfm" target="popup">Não sei meu CEP</a></div><br/>
+                <input type="radio" id="postServiceSedex" name="postService" value="sedex"><label for="postServiceSedex" style="margin-left: 10px">SEDEX</label><br/>
+                <input type="radio" id="postServicePac" name="postService" value="pac"><label for="postServicePac" style="margin-left: 10px">PAC</label><br/>
+                <div id="responseFrete"></div>
             </div>
             <div class="detailsArea">
-                
+
             </div>
             <div class="detailsArea">
             <label>Total a pagar</label><br/>
-                <!-- <div class="finalPrice">R$ <?php echo $valorTotal; ?></div> -->
+                <div class="finalPrice">R$ <?php echo number_format($purchaseDeets['purchase_value'],2,',', '.'); ?></div>
                 <button class="buyout" onclick="proceedToIdentify()">Continuar</button>
             </div>
         </div>

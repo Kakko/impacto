@@ -864,8 +864,8 @@ class Products extends Model {
             $data .='
                 <label>Total a pagar</label><br/>
                 <input type="text" value="'.$finalPrice.'" id="totalProductsPrice" hidden>
-                <div class="finalPrice">R$ '.number_format($finalPrice, 2, '.', '.').'</div>
-                <button class="buyout" onclick="proceedToIdentify()" disabled>Continuar</button>
+                <div class="finalPrice" id="finalPrice">R$ '.number_format($finalPrice, 2, '.', '.').'</div>
+                <button class="buyout" onclick="proceedToIdentify()">Continuar</button>
             ';
         }
 

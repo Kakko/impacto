@@ -329,7 +329,7 @@ class Clients extends Model {
     }
 
     public function fetchClientAddress($id){
-        $sql = $this->db->prepare("SELECT client_address.*, estados.*, cidades.* FROM client_address
+        $sql = $this->db->prepare("SELECT client_address.id AS address_id, client_address.*, estados.*, cidades.* FROM client_address
                                     LEFT JOIN estados ON (estados.id = client_address.state_id)
                                     LEFT JOIN cidades ON (cidades.id = client_address.city_id)
                                     WHERE client_address.client_id = :id");

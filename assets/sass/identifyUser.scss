@@ -160,6 +160,7 @@ $btn-bckg: #c3e6f8;
                     box-sizing: border-box;
                     border-radius: 4px;
                     margin-bottom: 15px;
+                    padding-left: 10px;
                 }
             }
             .addressCardArea {
@@ -175,8 +176,9 @@ $btn-bckg: #c3e6f8;
                     height: 100%;
                     float: left;
                     .checkAddress {
-                        margin-top: 40px;
+                        // margin-top: 40px;
                         margin-left: 10px;
+                        border-radius: 50%;
                     }
                 }
                 .addressCard {

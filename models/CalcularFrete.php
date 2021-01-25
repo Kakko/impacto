@@ -89,7 +89,7 @@ class CalcularFrete extends Model {
             <div class="detailsArea" id="detailsArea">
             <label>Total a pagar</label><br/>
                <input type="text" value="'.$price.'" id="totalProductsPrice" hidden>
-               <div class="finalPrice" id="finalPrice">R$ '.number_format($total, 2, ',', '.').'</div>
+               <div class="finalPrice" id="finalPrice">R$ '.number_format($price, 2, ',', '.').'</div>
                <button class="buyout" onclick="proceedToIdentify()">Continuar</button>
             </div>
            ';
@@ -110,7 +110,7 @@ class CalcularFrete extends Model {
             <div class="detailsArea" id="detailsArea">
             <label>Total a pagar</label><br/>
                <div class="finalPrice" id="finalPrice">R$ '.number_format($price, 2, ',', '.').'</div>
-               <button class="buyout" onclick="proceedToIdentify('.$id.')">Continuar</button>
+               <button class="buyout" onclick="proceedToIdentify('.$id.')" disabled>Continuar</button>
             </div>
            ';
            return $data;

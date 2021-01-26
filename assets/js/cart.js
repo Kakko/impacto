@@ -116,14 +116,55 @@ function changeFinalValue(id, qtd){
     document.getElementById('finalPrice'+id).innerHTML = 'R$ '+price
 }
 
+function setDeliverTax(id){
+    let cep = document.querySelector('input[name="address"]:checked').value
+    let finalPrice = document.getElementById('finalPrice').innerText.split(' ')[1].replace(',', '.');
+    let postService = document.querySelector('input[name="postService"]:checked').value
+    var formData = new FormData();
+
+    formData.append('finalPrice', finalPrice)
+    formData.append('cep', cep)
+    formData.append('postService', postService)
+    formData.append('cart_action', 'updatePurchase')
+    
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', window.location.href, true);
+    xhr.onreadystatechange = () => {
+        if(xhr.readyState == 4){
+            if(xhr.status == 200){
+                console.log(xhr.responseText)
+                document.getElementById('cartDetails').innerHTML = xhr.responseText;
+            } else {
+                console.log('deu ruim')
+            }
+        }
+    }
+    xhr.send(formData)
+}
+
 function proceedToIdentify(){
+
+    window.location.href="identification"
+}
+
+function proceedToPayment() {
+    // let receiverName = document.getElementById('receiverName').value
+    // let receiverDocs = document.getElementById('receiverDocs').value
+    // let receiverEmail = document.getElementById('receiverEmail').value
+    // let receiverPhone = document.getElementById('receiverPhone').value
     // let finalPrice = document.getElementById('finalPrice').innerText.split(' ')[1].replace(',', '.');
-    // let frete = document.getElementById('cepDestino').innerText.split(': ')[1];
+    // let cep = document.querySelector('input[name="address"]:checked').value
+
     // var formData = new FormData();
 
+    // formData.append('receiverName', receiverName)
+    // formData.append('receiverDocs', receiverDocs)
+    // formData.append('receiverEmail', receiverEmail)
+    // formData.append('receiverPhone', receiverPhone)
     // formData.append('finalPrice', finalPrice)
-    // formData.append('cep', frete)
-    // formData.append('cart_action', 'updatePurchase')
+    // formData.append('cep', cep)
+    // formData.append('cart_action', 'proceedToPayment')
 
     // const xhr = new XMLHttpRequest();
     // xhr.open('POST', window.location.href, true);
@@ -131,18 +172,20 @@ function proceedToIdentify(){
     //     if(xhr.readyState == 4){
     //         if(xhr.status == 200){
     //             console.log(xhr.responseText)
+    //             document.getElementById('purchaseSteps').style.backgroundImage = "url('../assets/images/Flags-3.svg')"
+    //             document.getElementById('paymentDeets').style.display = "block"
     //         } else {
-    //             console.log('deu ruim')
+    //             console.log('culpa do pira')
     //         }
     //     }
     // }
     // xhr.send(formData)
 
-    window.location.href="identification"
+    document.getElementById('purchaseSteps').style.backgroundImage = "url('../assets/images/Flags-3.svg')"
+                document.getElementById('paymentDeets').style.display = "block"
+    
 }
 
-function selectAddress(id) {
-    let cep = document.getElementById('addressInfo'+id).value
-
-    console.log(cep)
-}
+// function selectAddress(id) {
+    
+// }

@@ -11,6 +11,7 @@ class CalcularFrete extends Model {
         // $comprimento, /* comprimento do produto incluindo embalagem em cm */
         // $valor_declarado='0' /* indicar 0 caso nao queira o valor declarado */
      ){
+
         $peso = 0;
         $sql = $this->db->prepare("SELECT user_cart.*, products.*, product_details.* FROM user_cart 
                                     LEFT JOIN products ON (user_cart.product_id = products.id)
@@ -65,12 +66,7 @@ class CalcularFrete extends Model {
 
            $data .='
             <div class="detailsArea">
-               <label>Calcular Frete (Somente números)</label><br/>
-               <input type="number" class="calcShipment" id="freteValue" placeholder="CEP" onkeyup="calcularFrete('.$id.')">
-               <button style="margin-left: 10px" onclick="calcularFrete('.$id.')">Calcular</button><br/>
-               <div><a href="http://www.buscacep.correios.com.br/sistemas/buscacep/default.cfm" target="popup">Não sei meu CEP</a></div><br/>
-               <input type="radio" id="postServiceSedex" name="postService" value="sedex"><label for="postServiceSedex" style="margin-left: 10px">SEDEX</label><br/>
-               <input type="radio" id="postServicePac" name="postService" value="pac"><label for="postServicePac" style="margin-left: 10px">PAC</label><br/>
+               
             </div>
             <div class="detailsArea">
                <div style="font-size: 18px;" id="cepDestino">Frete para o CEP: '.$cep_destino.'</div><br/><br/>
@@ -89,8 +85,8 @@ class CalcularFrete extends Model {
             <div class="detailsArea" id="detailsArea">
             <label>Total a pagar</label><br/>
                <input type="text" value="'.$price.'" id="totalProductsPrice" hidden>
-               <div class="finalPrice" id="finalPrice">R$ '.number_format($price, 2, ',', '.').'</div>
-               <button class="buyout" onclick="proceedToIdentify()">Continuar</button>
+               <div class="finalPrice" id="finalPrice">R$ '.number_format($total, 2, ',', '.').'</div>
+               <button class="buyout" onclick="proceedToPayment()">Continuar</button>
             </div>
            ';
 

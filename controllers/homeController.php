@@ -96,13 +96,6 @@ class homeController extends Controller {
                 echo $products->updateFinalPrice($id);
                 exit;
             }
-            if($_POST['cart_action'] == 'updatePurchase'){
-                $cep = addslashes($_POST['cep']);
-                $finalPrice = addslashes($_POST['finalPrice']);
-                $id = $_SESSION['cUser'];
-                echo $client->updatePurchase($id, $cep, $finalPrice);
-                exit;
-            }
         }
 
         $data['cartProducts'] = $products->showRegisteredCartProducts($id);
@@ -116,6 +109,31 @@ class homeController extends Controller {
         $data = array();
         $products = new Products();
         $client = new Clients();
+        $frete = new CalcularFrete();
+
+        if(!empty($_POST['cart_action']) && isset($_POST['cart_action'])){
+            if($_POST['cart_action'] == 'updatePurchase'){
+
+                $cep_destino = addslashes($_POST['cep']);
+                $price = addslashes($_POST['finalPrice']);
+                $cod_servico = addslashes($_POST['postService']);
+                $id = $_SESSION['cUser'];
+                echo $frete->calculaFrete($id, $cep_destino, $cod_servico, $price);
+                exit;
+            }
+            if($_POST['cart_action'] == 'proceedToPayment'){
+                $receiverName = addslashes($_POST['receiverName']);
+                $receiverDocs = addslashes($_POST['receiverDocs']);
+                $receiverEmail = addslashes($_POST['receiverEmail']);
+                $receiverPhone = addslashes($_POST['receiverPhone']);
+                $finalPrice = addslashes($_POST['finalPrice']);
+                $cep = addslashes($_POST['cep']);
+                $client_id = $_SESSION['cUser'];
+
+                echo $client->proceedToPayment($receiverName, $receiverDocs, $receiverEmail, $receiverPhone, $finalPrice, $cep, $client_id);
+                exit;
+            }
+        }
 
         $data['purchaseDeets'] = $client->purchaseDeets($_SESSION['cUser']);
         $data['clientAddress'] = $client->fetchClientAddress($_SESSION['cUser']);

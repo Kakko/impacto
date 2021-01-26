@@ -376,4 +376,22 @@ class Clients extends Model {
 
         return $data;
     }
+
+    public function proceedToPayment($receiverName, $receiverDocs, $receiverEmail, $receiverPhone, $finalPrice, $cep, $client_id){
+        $sql = $this->db->prepare("SELECT * FROM deliver_deets WHERE client_id = :client_id AND sent != 'S'");
+        $sql->bindValue(":client_id", $client_id);
+        $sql->execute();
+
+        if($sql->rowCount() == 0){
+            $sql = $this->db->prepare("INSERT INTO deliver_deets SET client_id = :client_id, receiverName = :receiverName, receiverDocs = :receiverDocs, receiverEmail = :receiverEmail, receiverPhone = :receiverPhone, destinyCep = :destinyCep, finalPrice = :finalPrice, sent = 'N', data_cadastro = now()");
+            $sql->bindValue(":client_id", $client_id);
+            $sql->bindValue(":receiverName", $receiverName);
+            $sql->bindValue(":receiverDocs", $receiverDocs);
+            $sql->bindValue(":receiverEmail", $receiverEmail);
+            $sql->bindValue(":receiverPhone", $receiverPhone);
+            $sql->bindValue(":destinyCep", $cep);
+            $sql->bindValue(":finalPrice", $finalPrice);
+            $sql->execute();
+        }
+    }
 }

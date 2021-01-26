@@ -147,11 +147,12 @@ $btn-bckg: #c3e6f8;
             }
         }
         .shipmentDeets {
-            width: 66%;
+            width: 33%;
             height: 95%;
             float: left;
+            overflow: auto;
             .receiverData {
-                width: 50%;
+                width: 100%;
                 height: 40%;
                 .receiverInput{
                     width: 95%;
@@ -164,7 +165,7 @@ $btn-bckg: #c3e6f8;
                 }
             }
             .addressCardArea {
-                width: 50%;
+                width: 100%;
                 height: 60%;
                 .title {
                     color: $text-color;
@@ -217,6 +218,13 @@ $btn-bckg: #c3e6f8;
                 }
             }
             
+        }
+        .paymentDeets {
+            width: 33%;
+            height: 95%;
+            float: left;
+            background-color: hotpink;
+            display: none;
         }
     }
     .cartDetails {

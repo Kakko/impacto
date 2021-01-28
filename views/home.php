@@ -14,9 +14,6 @@ if(!isset($_SESSION)){
     <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/home.js"></script>
 </head>
 <body>
-    <!-- <?php echo session_status(); ?> -->
-    <!-- <?php echo session_id(); ?> -->
-    <!-- <?php echo $_SESSION['cUser']; ?> -->
     <!-- MODAL DE LOGIN -->
     <div class="loginModal" id="loginModal">
         <div class="formArea">

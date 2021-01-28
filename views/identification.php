@@ -63,8 +63,83 @@
                     <?php endforeach; ?>
                 </div>
             </div>
+            <!-- INÍCIO DA ÁREA DE PAGAMENTO / CADASTRAMENTO DOS CARTÕES -->
             <div class="paymentDeets" id="paymentDeets">
-                <img src="../assets/icons/linkedin-icon.svg">
+                <div class="paymentMethods">
+                    <div class="paymentType" style="margin-right: 10px;" onclick="showCardOptions()">
+                        <img src="../assets/icons/creditcard-icon.svg">
+                        <div>Cartão de Crédito</div>
+                    </div>
+                    <div class="paymentType">
+                        <img src="../assets/icons/bankslip-icon.svg">
+                        <div>Transferência Bancária</div>
+                    </div>
+                </div>
+                <div class="creditCardSelected" id="creditCardSelected">
+                    <div class="title">Cartões Salvos</div><img src="../assets/icons/Plus.svg">
+                    <!-- AQUI VAI ENTRAR UM FOREACH PARA EXIBIR OS CARTÕES JÁ SALVOS -->
+                    <?php echo $cards; ?>
+                </div>
+                <div class="transferSelected">
+                    <div class="title">Dados Bancários</div><img src="../assets/icons/Plus.svg">
+                    <!-- AQUI VAI ENTRAR UM FOREACH PARA EXIBIR OS CARTÕES JÁ SALVOS -->
+                </div>
+                <div class="addNewCard">
+                    <div class="title">Dados do Cartão</div><div class="titleVoltar">Voltar</div>
+                    <div class="inputCard">
+                        <input type="number" class="cardInput" id="cardInputNumber" placeholder="Número do Cartão" onkeyup="showOnCard()"><br/>
+                        <input type="text" class="cardInput" id="cardInputName" placeholder="Nome impresso no cartão" onkeyup="showOnCard()"><br/>
+                        <select class="selectExpirationMonth" id="selectExpirationMonth" name="selectExpirationMonth" onchange="changeCardSide()">
+                            <option value="">Mês de Vencimento</option>
+                            <option></option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                        </select>
+                        <select class="selectExpirationMonth" id="selectExpirationYear" name="selectExpirationYear" onchange="changeCardSide()">
+                            <option value="">Ano de Vencimento</option>
+                            <option></option>
+                            <option>2021</option>
+                            <option>2022</option>
+                            <option>2023</option>
+                            <option>2024</option>
+                            <option>2025</option>
+                            <option>2026</option>
+                            <option>2027</option>
+                            <option>2028</option>
+                            <option>2029</option>
+                            <option>2030</option>
+                            <option>2031</option>
+                            <option>2032</option>
+                        </select>
+                        <input type="number" class="cardInput" id="cardInputCvv" placeholder="CVV" onkeyup="showCvvOnCard()">
+                    </div>
+                    <div class="cardImage" id="cardImage">
+                        <div id="frontCardInputs">
+                            <input type="text" class="cardInputNumber" id="showInputNumber" readonly><br/>
+                            <input type="text" class="cardInputName" id="showInputName" readonly><br/>
+                        </div>
+                        <div class="backCardInputs">
+                            <div class="valid">
+                                <label>Valid Thru</label>
+                                <input type="text" id="showInputValid">
+                            </div>
+                            <div class="cvv">
+                                <label>CVV</label><br/>
+                                <input type="text" id="showInputCvv">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="cartDetails" id="cartDetails">
@@ -75,7 +150,7 @@
                 <div id="responseFrete"></div>
             </div>
             <div class="detailsArea">
-
+                
             </div>
             <div class="detailsArea">
             <label>Total a pagar</label><br/>

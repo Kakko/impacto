@@ -14,7 +14,7 @@ class homeController extends Controller {
 
                 $client->registerClient($name, $email, $password);
             }
-            if($_POST['user_action'] == 'loginAction'){
+            if($_POST['user_action'] == 'loginAction'){ // Efetua o Login
                 $email = addslashes($_POST['loginEmail']);
                 $password = addslashes($_POST['loginPassword']);
                 $userSessionId = addslashes($_POST['userSessionID']);
@@ -22,26 +22,36 @@ class homeController extends Controller {
                 $client->loginClient($email, $password, $userSessionId);
 
             }
-            if($_POST['user_action'] == 'getCartNumber'){
+            if($_POST['user_action'] == 'getCartNumber'){ //Exibe a quantidade de produtos no carrinho
                 $guest_id = addslashes($_POST['guest_id']);
 
                 echo $products->getCartNumber($guest_id);
                 exit;
             }
-            if($_POST['user_action'] == 'sendToCartGU'){
-                $guest_user_id = session_id();
-                $productID = addslashes($_POST['id']);
+            if($_POST['user_action'] == 'sendToCartGU'){ // Envia o item para o carrinho do usuário
+                if(!empty($_SESSION['cUser']) && isset($_SESSION['cUser'])){
+                    $registeredUser = $_SESSION['cUser'];
+                    $guest_user_id = session_id();
+                    $productID = addslashes($_POST['id']);
 
-                echo $products->sendToCartGU($guest_user_id, $productID);
-                exit;
+                    echo $products->sendToCartGU($registeredUser, $guest_user_id, $productID);
+                    exit;
+                } else {
+                    $registeredUser = null;
+                    $guest_user_id = session_id();
+                    $productID = addslashes($_POST['id']);
+    
+                    echo $products->sendToCartGU($registeredUser, $guest_user_id, $productID);
+                    exit;
+                }
             }  
-            if($_POST['user_action'] == 'fetchGuestCart'){
+            if($_POST['user_action'] == 'fetchGuestCart'){ // Exibe os dados do carrinho do usuário
                 $id = addslashes($_POST['guest_id']);
 
                 echo $products->fetchGuestCart($id);
                 exit;
             }
-            if($_POST['user_action'] == 'removeProductCart'){
+            if($_POST['user_action'] == 'removeProductCart'){ // Remove um produto do carrinho
                 $id = addslashes($_POST['id']);
                 $userID = addslashes($_POST['userID']);
                 
@@ -96,6 +106,13 @@ class homeController extends Controller {
                 echo $products->updateFinalPrice($id);
                 exit;
             }
+            if($_POST['cart_action'] == 'proceedToIdentify'){
+                $id = $_SESSION['cUser'];
+                $finalPrice = addslashes($_POST['finalPrice']);
+
+                echo $products->proceedToIdentify($id, $finalPrice);
+                exit;
+            }
         }
 
         $data['cartProducts'] = $products->showRegisteredCartProducts($id);
@@ -135,6 +152,7 @@ class homeController extends Controller {
             }
         }
 
+        $data['cards'] = $client->fetchSavedCards($_SESSION['cUser']);
         $data['purchaseDeets'] = $client->purchaseDeets($_SESSION['cUser']);
         $data['clientAddress'] = $client->fetchClientAddress($_SESSION['cUser']);
         $data['cartProducts'] = $products->showRegisteredCartProducts($_SESSION['cUser']);

@@ -64,13 +64,13 @@
         </div>
         <div class="cartDetails" id="cartDetails">
             <div class="detailsArea">
-                <label>Calcular Frete (Somente números)</label><br/>
+                <!-- <label>Calcular Frete (Somente números)</label><br/>
                 <input type="number" class="calcShipment" id="freteValue" placeholder="CEP" onkeyup="calcularFrete(<?php echo $_SESSION['cUser']; ?>)">
                 <button style="margin-left: 10px" onclick="calcularFrete(<?php echo $_SESSION['cUser']; ?>)">Calcular</button><br/>
                 <div><a href="http://www.buscacep.correios.com.br/sistemas/buscacep/default.cfm" target="popup">Não sei meu CEP</a></div><br/>
                 <input type="radio" id="postServiceSedex" name="postService" value="sedex"><label for="postServiceSedex" style="margin-left: 10px">SEDEX</label><br/>
                 <input type="radio" id="postServicePac" name="postService" value="pac"><label for="postServicePac" style="margin-left: 10px">PAC</label><br/>
-                <div id="responseFrete"></div>
+                <div id="responseFrete"></div> -->
             </div>
             <div class="detailsArea">
 
@@ -92,7 +92,6 @@
     xhr.onreadystatechange = () => {
         if(xhr.readyState == 4){
             if(xhr.status == 200){
-                console.log(xhr.responseText)
                 document.getElementById('detailsArea').innerHTML = xhr.responseText
             } else {
                 console.log('xiiii')
@@ -101,7 +100,6 @@
     }
     xhr.send(formData)
     }
-
-    document.onload(fetchFinalValue())
+    fetchFinalValue();
 </script>
 <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/cart.js"></script>

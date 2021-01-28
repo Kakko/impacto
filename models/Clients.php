@@ -378,20 +378,62 @@ class Clients extends Model {
     }
 
     public function proceedToPayment($receiverName, $receiverDocs, $receiverEmail, $receiverPhone, $finalPrice, $cep, $client_id){
+        //UPDATE THE PURCHASE VALUE WITH THE DELIVER TAX
+        $sql = $this->db->prepare("UPDATE user_purchase SET purchase_value = :finalPrice WHERE client_id = client_id");
+        $sql->bindValue(":finalPrice", $finalPrice);
+        $sql->bindValue(":client_id", $client_id);
+        $sql->execute();
+
+        //FETCH THE PURCHASE ID
+        $sql = $this->db->prepare("SELECT * FROM user_purchase WHERE user_id = :id AND approved = 'N'");
+        $sql->bindValue(":id", $client_id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $data = $sql->fetch(PDO::FETCH_ASSOC);
+        }
+
+        //VERIFY IF ALREADY HAS AN PURCHASE IN PROGRESS
         $sql = $this->db->prepare("SELECT * FROM deliver_deets WHERE client_id = :client_id AND sent != 'S'");
         $sql->bindValue(":client_id", $client_id);
         $sql->execute();
 
+        //INSERT A NEW PURCHASE IF DON'T HAVE A PURCHASE IN PROGRESS
         if($sql->rowCount() == 0){
-            $sql = $this->db->prepare("INSERT INTO deliver_deets SET client_id = :client_id, receiverName = :receiverName, receiverDocs = :receiverDocs, receiverEmail = :receiverEmail, receiverPhone = :receiverPhone, destinyCep = :destinyCep, finalPrice = :finalPrice, sent = 'N', data_cadastro = now()");
+            $sql = $this->db->prepare("INSERT INTO deliver_deets SET client_id = :client_id, purchase_id = :purchase_id, receiverName = :receiverName, receiverDocs = :receiverDocs, receiverEmail = :receiverEmail, receiverPhone = :receiverPhone, destinyCep = :destinyCep, sent = 'N', data_cadastro = now()");
             $sql->bindValue(":client_id", $client_id);
+            $sql->bindValue(":purchase_id", $data['id']);
             $sql->bindValue(":receiverName", $receiverName);
             $sql->bindValue(":receiverDocs", $receiverDocs);
             $sql->bindValue(":receiverEmail", $receiverEmail);
             $sql->bindValue(":receiverPhone", $receiverPhone);
             $sql->bindValue(":destinyCep", $cep);
-            $sql->bindValue(":finalPrice", $finalPrice);
             $sql->execute();
+        } else {
+            //UPDATE THE PURCHASE IN PROGRESS
+            $sql = $this->db->prepare("UPDATE deliver_deets SET client_id = :client_id, purchase_id = :purchase_id, receiverName = :receiverName, receiverDocs = :receiverDocs, receiverEmail = :receiverEmail, receiverPhone = :receiverPhone, destinyCep = :destinyCep, sent = 'N', data_cadastro = now()");
+            $sql->bindValue(":client_id", $client_id);
+            $sql->bindValue(":purchase_id", $data['id']);
+            $sql->bindValue(":receiverName", $receiverName);
+            $sql->bindValue(":receiverDocs", $receiverDocs);
+            $sql->bindValue(":receiverEmail", $receiverEmail);
+            $sql->bindValue(":receiverPhone", $receiverPhone);
+            $sql->bindValue(":destinyCep", $cep);
+            $sql->execute();
+        }
+    }
+
+    public function fetchSavedCards($id){
+        $sql = $this->db->prepare("SELECT * FROM card_deets WHERE client_id = :id");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $cards = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+            return $cards;
+        } else {
+            return 'Sem Cartões Cadastrados';
         }
     }
 }

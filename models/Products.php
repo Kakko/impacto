@@ -580,7 +580,7 @@ class Products extends Model {
         }
     }
 
-    public function sendToCartGU($guest_user_id, $productID){
+    public function sendToCartGU($registeredUser, $guest_user_id, $productID){
         $sql = $this->db->prepare("SELECT * FROM guest_user WHERE guest_user_id = :guest_user_id");
         $sql->bindValue(":guest_user_id", $guest_user_id);
         $sql->execute();
@@ -589,14 +589,16 @@ class Products extends Model {
             $data = $sql->fetch(PDO::FETCH_ASSOC);
             $updatedProductID = $data['itens_on_cart'].','.$productID;
 
-            $sql2 = $this->db->prepare("UPDATE guest_user SET itens_on_cart = :itens_on_cart WHERE guest_user_id = :guest_user_id");
+            $sql2 = $this->db->prepare("UPDATE guest_user SET registered_user_id = :registered_user_id, itens_on_cart = :itens_on_cart WHERE guest_user_id = :guest_user_id");
+            $sql2->bindValue(":registered_user_id", $registeredUser);
             $sql2->bindValue(":itens_on_cart", $updatedProductID);
             $sql2->bindValue(":guest_user_id", $guest_user_id);
             $sql2->execute();
 
             
         } else {
-            $sql = $this->db->prepare("INSERT INTO guest_user SET guest_user_id = :guest_user_id, itens_on_cart = :itens_on_cart, data_cadastro = now()");
+            $sql = $this->db->prepare("INSERT INTO guest_user SET guest_user_id = :guest_user_id, registered_user_id = :registered_user_id, itens_on_cart = :itens_on_cart, data_cadastro = now()");
+            $sql->bindValue(":registered_user_id", $registeredUser);
             $sql->bindValue(":guest_user_id", $guest_user_id);
             $sql->bindValue(":itens_on_cart", $productID);
             $sql->execute();
@@ -626,13 +628,18 @@ class Products extends Model {
             
             $data = explode(',', $data['itens_on_cart']);
             $count = count($data);
+
+            return $count;
+        } else {
+            return 0;
         }
 
-        return $count;
+        
     }
 
     public function fetchGuestCart($id){
         $result = '';
+        $total = 0;
         $sql = $this->db->prepare("SELECT * FROM guest_user WHERE guest_user_id = :guest_user_id");
         $sql->bindValue(":guest_user_id", $id);
         $sql->execute();
@@ -677,13 +684,13 @@ class Products extends Model {
             }
             $result .='
             </div>
-            <div class="subTotal">SubTotal:R$2000,00</div>';
+            ';
             if(!isset($_SESSION['cUser'])){
                 $result .='
                     <button class="closeCart" onclick="proceedToLog()">Finalizar Compra</button>';
             } else {
                 $result .='
-                    <button class="closeCart" onclick="proceedToFinish('.$_SESSION['cUser'].')">Finalizar Compra</button>
+                    <button class="closeCart" onclick="proceedToFinish()">Finalizar Compra</button>
                 ';
             }
             $result .='
@@ -865,10 +872,28 @@ class Products extends Model {
                 <label>Total a pagar</label><br/>
                 <input type="text" value="'.$finalPrice.'" id="totalProductsPrice" hidden>
                 <div class="finalPrice" id="finalPrice">R$ '.number_format($finalPrice, 2, '.', '.').'</div>
-                <button class="buyout" onclick="proceedToPayment()">Continuar</button>
+                <button class="buyout" onclick="proceedToIdentify()">Continuar</button>
             ';
         }
 
         return $data;
+    }
+
+    public function proceedToIdentify($id, $finalPrice){
+        $sql = $this->db->prepare("SELECT * FROM user_purchase WHERE user_id = :id");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $sql = $this->db->prepare("UPDATE user_purchase SET purchase_value = :finalPrice WHERE user_id = :id");
+            $sql->bindValue(":finalPrice", $finalPrice);
+            $sql->bindValue(":id", $id);
+            $sql->execute();
+        } else {
+            $sql = $this->db->prepare("INSERT INTO user_purchase SET user_id = :id, purchase_value = :finalPrice, approved = 'N', data_cadastro = now()");
+            $sql->bindValue(":finalPrice", $finalPrice);
+            $sql->bindValue(":id", $id);
+            $sql->execute();
+        }
     }
 }

@@ -150,6 +150,25 @@ class homeController extends Controller {
                 echo $client->proceedToPayment($receiverName, $receiverDocs, $receiverEmail, $receiverPhone, $finalPrice, $cep, $client_id);
                 exit;
             }
+            if($_POST['cart_action'] == 'addCardDeets'){
+                $cardNumber = addslashes($_POST['cardNumber']);
+                $cardName = addslashes($_POST['cardName']);
+                $expMonth = addslashes($_POST['expMonth']);
+                $expYear = addslashes($_POST['expYear']);
+                $cardCvv = addslashes($_POST['cardCvv']);
+                $client_id = $_SESSION['cUser'];
+
+                echo $client->addCard($cardNumber, $cardName, $expMonth, $expYear, $cardCvv, $client_id);
+                exit;
+            }
+            if($_POST['cart_action'] == 'finishInsertData'){
+                $cardId = addslashes($_POST['cardId']);
+                $cep = addslashes($_POST['cep']);
+                $id = $_SESSION['cUser'];
+
+                $client->finishInsertData($cardId, $cep, $id);
+                exit;
+            }
         }
 
         $data['cards'] = $client->fetchSavedCards($_SESSION['cUser']);

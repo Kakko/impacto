@@ -199,6 +199,41 @@ function proceedToPayment() {
     xhr.send(formData)
     
 }
+function addNewCard(){
+    document.getElementById('paymentMethods').style.display = "none"
+    document.getElementById('creditCardSelected').style.display = "none"
+    document.getElementById('addNewCard').style.display = "block"
+}
+
+function saveCard() {
+    let cardNumber = document.getElementById('cardInputNumber').value
+    let cardName = document.getElementById('cardInputName').value
+    let expMonth = document.getElementById('selectExpirationMonth').value
+    let expYear = document.getElementById('selectExpirationYear').value
+    let cardCvv = document.getElementById('cardInputCvv').value
+
+    var formData = new FormData();
+
+    formData.append('cardNumber', cardNumber)
+    formData.append('cardName', cardName)
+    formData.append('expMonth', expMonth)
+    formData.append('expYear', expYear)
+    formData.append('cardCvv', cardCvv)
+    formData.append('cart_action', 'addCardDeets')
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', window.location.href, true);
+    xhr.onreadystatechange = () => {
+        if(xhr.readyState == 4){
+            if(xhr.status == 200){
+                console.log(xhr.responseText)
+            } else {
+                console.log('erro')
+            }
+        }
+    }
+    xhr.send(formData)
+}
 
 function showCardOptions() {
     document.getElementById('creditCardSelected').style.display = "block"
@@ -232,4 +267,34 @@ function showCvvOnCard() {
     let cvv = document.getElementById('cardInputCvv').value
 
     document.getElementById('showInputCvv').value = cvv
+}
+
+function cardSelected(id){
+    let cep = document.getElementById('cepDestino').innerText.split(': ')[1]
+    var formData = new FormData();
+
+    formData.append('cardId', id);
+    formData.append('cep', cep)
+    formData.append('cart_action', 'finishInsertData')
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', window.location.href, true);
+    xhr.onreadystatechange = () => {
+        if(xhr.readyState == 4){
+            if(xhr.status == 200){
+                console.log(xhr.responseText)
+            } else {
+                console.log('erro')
+            }
+        }
+    }
+    xhr.send(formData)
+
+    document.getElementById('buyout').innerText = 'Finalizar'
+    document.getElementById('buyout').setAttribute('onclick', 'finish()');
+}
+
+function finish() {
+    
+
 }

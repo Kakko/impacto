@@ -86,7 +86,7 @@ class CalcularFrete extends Model {
             <label>Total a pagar</label><br/>
                <input type="text" value="'.$price.'" id="totalProductsPrice" hidden>
                <div class="finalPrice" id="finalPrice">R$ '.number_format($total, 2, ',', '.').'</div>
-               <button class="buyout" onclick="proceedToPayment()">Continuar</button>
+               <button class="buyout" onclick="proceedToPayment()" id="buyout" >Continuar</button>
             </div>
            ';
 

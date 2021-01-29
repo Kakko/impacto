@@ -256,6 +256,54 @@ $btn-bckg: #c3e6f8;
                     color: $text-color;
                     float: left;
                 }
+                .registeredCards {
+                    width: 100%;
+                    height: 105px;
+                    background-color: #ECEEEF;
+                    border-color: 1px solid $select-border;
+                    box-sizing: border-box;
+                    border-radius: 8px;
+                    font-family: 'Sora';
+                    margin-bottom: 10px;
+                    .radioCardSelect{
+                        width: 10%;
+                        height: 100%;
+                        float: left;
+                        .selectCardRadio{
+                            margin-left: 70%;
+                            margin-top: 100%;
+                        }
+                    }
+                    .cardInfo {
+                        width: 65%;
+                        height: 100%;
+                        float: left;
+                        .cardTitle {
+                            margin-top: 30px;
+                            padding-left: 10px;
+                            font-family: 'Sora';
+                            font-weight: 700;
+                            font-size: 16px;
+                            color: $select-border;
+                        }
+                        .cardData {
+                            padding-left: 10px;
+                            font-family: 'Sora';
+                            font-weight: 400;
+                            font-size: 16px;
+                            color: $select-border;
+                        }
+                    }
+                    .cardIcon {
+                        width: 20%;
+                        height: 100px;
+                        float: left;
+                        img {
+                            margin-top: 40%;
+                        }
+                        
+                    }
+                }
             }
             .transferSelected {
                 width: 100%;
@@ -399,6 +447,19 @@ $btn-bckg: #c3e6f8;
                         }
                     }
                     
+                }
+                .saveCard {
+                    width: 150px;
+                    height: 30px;
+                    background: linear-gradient(93.74deg, #6CF598 0%, rgba(127, 202, 245, 1) 100%);
+                    margin-top: 10px;
+                    margin-left: 280px;
+                    color: #FFF;
+                    border: none;
+                    border-radius: 4px;
+                    font-family: 'Sora';
+                    font-weight: 400;
+                    font-size: 14px;
                 }
             }
         }

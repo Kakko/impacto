@@ -379,7 +379,7 @@ class Clients extends Model {
 
     public function proceedToPayment($receiverName, $receiverDocs, $receiverEmail, $receiverPhone, $finalPrice, $cep, $client_id){
         //UPDATE THE PURCHASE VALUE WITH THE DELIVER TAX
-        $sql = $this->db->prepare("UPDATE user_purchase SET purchase_value = :finalPrice WHERE client_id = client_id");
+        $sql = $this->db->prepare("UPDATE user_purchase SET purchase_value = :finalPrice WHERE user_id = :client_id");
         $sql->bindValue(":finalPrice", $finalPrice);
         $sql->bindValue(":client_id", $client_id);
         $sql->execute();
@@ -423,6 +423,47 @@ class Clients extends Model {
         }
     }
 
+    public function addCard($cardNumber, $cardName, $expMonth, $expYear, $cardCvv, $client_id){
+        $data = '';
+        $sql = $this->db->prepare("SELECT * FROM card_deets WHERE n_card = :cardNumber AND client_id = :client_id");
+        $sql->bindValue(":cardNumber", $cardNumber);
+        $sql->bindValue(":client_id", $client_id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            return 'Já existe cartão com esse número cadastrado';
+        } else{
+            $sql = $this->db->prepare("INSERT INTO card_deets SET client_id = :client_id, n_card = :cardNumber, name_card = :cardName, exp_month = :expMonth, exp_year = :expYear, cvv = :cardCvv, data_cadastro = now()");
+            $sql->bindValue(":client_id", $client_id);
+            $sql->bindValue(":cardNumber", $cardNumber);
+            $sql->bindValue(":cardName", $cardName);
+            $sql->bindValue(":expMonth", $expMonth);
+            $sql->bindValue(":expYear", $expYear);
+            $sql->bindValue(":cardCvv", $cardCvv);
+            if($sql->execute()){
+                $sql = $this->db->prepare("SELECT * FROM card_deets WHERE client_id = :client_id");
+                $sql->bindValue(":client_id", $client_id);
+                $sql->execute();
+
+                if($sql->rowCount() > 0){
+                    $cardInfo = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+                    $data .='
+                    <div class="title">Cartões Salvos</div><img src="../assets/icons/Plus.svg" onclick="addNewCard()" style="cursor: pointer">';
+                    if(!empty($cards)){
+                        foreach($cardInfo as $card){
+                            $data .='
+                                <div class="registeredCards"></div>
+                            ';
+                        }
+                    } else {
+                        $data .='Sem Cartões Cadastrados ainda';
+                    }
+                }
+            }
+        }
+    }
+
     public function fetchSavedCards($id){
         $sql = $this->db->prepare("SELECT * FROM card_deets WHERE client_id = :id");
         $sql->bindValue(":id", $id);
@@ -435,5 +476,13 @@ class Clients extends Model {
         } else {
             return 'Sem Cartões Cadastrados';
         }
+    }
+
+    public function finishInsertData($cardId, $cep, $id){
+        $sql = $this->db->prepare("UPDATE user_purchase SET user_cep = :user_cep, card_id = :card_id, card = 'S' WHERE user_id = :id");
+        $sql->bindValue(":user_cep", $cep);
+        $sql->bindValue(":card_id", $cardId);
+        $sql->bindValue(":id", $id);
+        $sql->execute();
     }
 }

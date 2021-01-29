@@ -65,7 +65,7 @@
             </div>
             <!-- INÍCIO DA ÁREA DE PAGAMENTO / CADASTRAMENTO DOS CARTÕES -->
             <div class="paymentDeets" id="paymentDeets">
-                <div class="paymentMethods">
+                <div class="paymentMethods" id="paymentMethods">
                     <div class="paymentType" style="margin-right: 10px;" onclick="showCardOptions()">
                         <img src="../assets/icons/creditcard-icon.svg">
                         <div>Cartão de Crédito</div>
@@ -76,15 +76,30 @@
                     </div>
                 </div>
                 <div class="creditCardSelected" id="creditCardSelected">
-                    <div class="title">Cartões Salvos</div><img src="../assets/icons/Plus.svg">
+                    <div class="title">Cartões Salvos</div><img src="../assets/icons/Plus.svg" onclick="addNewCard()" style="cursor: pointer">
                     <!-- AQUI VAI ENTRAR UM FOREACH PARA EXIBIR OS CARTÕES JÁ SALVOS -->
-                    <?php echo $cards; ?>
+                    <?php if(!empty($cards)): ?>
+                        <?php foreach($cards as $c): ?>
+                            <div class="registeredCards">
+                                <div class="radioCardSelect">
+                                    <input type="radio" name="selectCard" class="selectCardRadio" onchange="cardSelected(<?php echo $c['id']; ?>)">
+                                </div>
+                                <div class="cardInfo">
+                                    <div class="cardTitle">Crédito</div>
+                                    <div class="cardData">Final <?php echo substr($c['n_card'], -4); ?></div>
+                                </div>
+                                <div class="cardIcon"><img src="../assets/icons/creditcard-icon.svg"></div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        Sem Cartões Cadastrados ainda
+                    <?php endif; ?>
                 </div>
                 <div class="transferSelected">
                     <div class="title">Dados Bancários</div><img src="../assets/icons/Plus.svg">
-                    <!-- AQUI VAI ENTRAR UM FOREACH PARA EXIBIR OS CARTÕES JÁ SALVOS -->
+                    <!-- AQUI VAI ENTRAR UM FOREACH PARA EXIBIR OS DADOS PARA TRANSFERÊNCIA -->
                 </div>
-                <div class="addNewCard">
+                <div class="addNewCard" id="addNewCard">
                     <div class="title">Dados do Cartão</div><div class="titleVoltar">Voltar</div>
                     <div class="inputCard">
                         <input type="number" class="cardInput" id="cardInputNumber" placeholder="Número do Cartão" onkeyup="showOnCard()"><br/>
@@ -139,6 +154,7 @@
                             </div>
                         </div>
                     </div>
+                    <button class="saveCard" onclick="saveCard()">Salvar Cartão</button>
                 </div>
             </div>
         </div>

@@ -38,7 +38,7 @@
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="shipmentDeets">
+            <div class="shipmentDeets" id="shipmentDeets">
                 <div class="receiverData">
                     <form method="POST">
                         <input type="text" class="receiverInput" name ="receiverName" id="receiverName" placeholder="Nome do Destinatário">
@@ -70,7 +70,7 @@
                         <img src="../assets/icons/creditcard-icon.svg">
                         <div>Cartão de Crédito</div>
                     </div>
-                    <div class="paymentType">
+                    <div class="paymentType" onclick="showTransferInfo()">
                         <img src="../assets/icons/bankslip-icon.svg">
                         <div>Transferência Bancária</div>
                     </div>
@@ -95,7 +95,7 @@
                         Sem Cartões Cadastrados ainda
                     <?php endif; ?>
                 </div>
-                <div class="transferSelected">
+                <div class="transferSelected" id="transferSelected">
                     <div class="title">Dados Bancários</div><img src="../assets/icons/Plus.svg">
                     <!-- AQUI VAI ENTRAR UM FOREACH PARA EXIBIR OS DADOS PARA TRANSFERÊNCIA -->
                 </div>

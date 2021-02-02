@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="returnLink">Voltar para a loja</div><div style="padding-top: 15px"><img src="<?php echo BASE_URL; ?>assets/icons/arrowleft-icon.svg"></div>
+        <div class="returnLink"><a href="<?php echo BASE_URL; ?>" style="text-decoration: none; color: #808B92">Voltar para a loja</a></div><div style="padding-top: 15px"><img src="<?php echo BASE_URL; ?>assets/icons/arrowleft-icon.svg"></div>
         <div class="purchaseSteps">
             <div class="roundIcon">1</div>
             <div class="stepDescription">Revise sua sacola</div>
@@ -24,42 +24,46 @@
                 <div class="title">Valor Total</div>
             </div>
             <div class="cartProductsArea">
-                <?php foreach($cartProducts as $prod): ?>
-                    <div class="productUnit">
-                        <div class="showRegisteredCartProducts">
-                            <!-- <input type="text" id="product_id" value="<?php echo $prod['id']; ?>" hidden> -->
-                            <div class="cartProductImage"><img src="<?php echo BASE_URL; ?>assets/images/products/<?php echo $prod['url']; ?>"></div>
-                            <div class="cartProductInfo">
-                                <div class="cartProductTitle"><?php echo $prod['name']; ?></div>
-                                <div class="cartProductAuthor"><?php echo $prod['author_name']; ?></div>
-                                <div class="amount">Quantidade</div>
-                                <div class="changeAmount">
-                                    <div class="lowerAmount" onclick="lowerProductAmount(<?php echo $prod['id']; ?>)"><img src="../assets/icons/less-icon1.svg"></div>
-                                    <input type="number" class="actualAmount" id="actualAmount<?php echo $prod['id']; ?>" value="<?php echo $prod['qtd']; ?>">
-                                    <div class="raiseAmount" onclick="raiseProductAmount(<?php echo $prod['id']; ?>)"><img src="../assets/icons/plus-icon1.svg"></div>
+                <?php if($cartProducts !== 'Sem produtos no seu carrinho'): ?>
+                    <?php foreach($cartProducts as $prod): ?>
+                        <div class="productUnit">
+                            <div class="showRegisteredCartProducts">
+                                <!-- <input type="text" id="product_id" value="<?php echo $prod['id']; ?>" hidden> -->
+                                <div class="cartProductImage"><img src="<?php echo BASE_URL; ?>assets/images/products/<?php echo $prod['url']; ?>"></div>
+                                <div class="cartProductInfo">
+                                    <div class="cartProductTitle"><?php echo $prod['name']; ?></div>
+                                    <div class="cartProductAuthor"><?php echo $prod['author_name']; ?></div>
+                                    <div class="amount">Quantidade</div>
+                                    <div class="changeAmount">
+                                        <div class="lowerAmount" onclick="lowerProductAmount(<?php echo $prod['id']; ?>)"><img src="../assets/icons/less-icon1.svg"></div>
+                                        <input type="number" class="actualAmount" id="actualAmount<?php echo $prod['id']; ?>" value="<?php echo $prod['qtd']; ?>">
+                                        <div class="raiseAmount" onclick="raiseProductAmount(<?php echo $prod['id']; ?>)"><img src="../assets/icons/plus-icon1.svg"></div>
+                                    </div>
+                                </div>
+                                <div class="cartProductAction" onclick="removeProductCart()">
+                                <img src="../assets/icons/trash-bag-item.svg">
                                 </div>
                             </div>
-                            <div class="cartProductAction" onclick="removeProductCart()">
-                            <img src="../assets/icons/trash-bag-item.svg">
+                            <div class="productPrice"> 
+                                <?php if($prod['has_discount'] == 'Sim'): ?>
+                                    <div class="hasDiscount">R$ <?php echo number_format($prod['price'], 2, ',', '.'); ?></div>
+                                    <div class="priceText" id="productPrice<?php echo $prod['id']; ?>">R$ <?php echo number_format($prod['price'] - ($prod['price'] / 100 * $prod['discount']), 2, ',', '.'); ?></div>
+                                <?php else: ?>
+                                    <div class="priceText" id="productPrice<?php echo $prod['id']; ?>" style="margin-top: 20px">R$ <?php echo number_format($prod['price'], 2, ',', '.'); ?></div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="finalPrice" id="finalPrice<?php echo $prod['id']; ?>">
+                                <?php if($prod['has_discount'] == 'Sim'): ?>
+                                    R$ <?php echo number_format(($prod['price'] - ($prod['price'] / 100 * $prod['discount'])) * $prod['qtd'], 2, ',', '.'); ?>
+                                <?php else: ?>
+                                    R$ <?php echo number_format($prod['price'] * $prod['qtd'], 2, ',', '.'); ?>
+                                <?php endif; ?>
                             </div>
                         </div>
-                        <div class="productPrice"> 
-                            <?php if($prod['has_discount'] == 'Sim'): ?>
-                                <div class="hasDiscount">R$ <?php echo number_format($prod['price'], 2, ',', '.'); ?></div>
-                                <div class="priceText" id="productPrice<?php echo $prod['id']; ?>">R$ <?php echo number_format($prod['price'] - ($prod['price'] / 100 * $prod['discount']), 2, ',', '.'); ?></div>
-                            <?php else: ?>
-                                <div class="priceText" id="productPrice<?php echo $prod['id']; ?>" style="margin-top: 20px">R$ <?php echo number_format($prod['price'], 2, ',', '.'); ?></div>
-                            <?php endif; ?>
-                        </div>
-                        <div class="finalPrice" id="finalPrice<?php echo $prod['id']; ?>">
-                            <?php if($prod['has_discount'] == 'Sim'): ?>
-                                R$ <?php echo number_format(($prod['price'] - ($prod['price'] / 100 * $prod['discount'])) * $prod['qtd'], 2, ',', '.'); ?>
-                            <?php else: ?>
-                                R$ <?php echo number_format($prod['price'] * $prod['qtd'], 2, ',', '.'); ?>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    Sem produtos no seu carrinho
+                <?php endif; ?>
             </div>
         </div>
         <div class="cartDetails" id="cartDetails">

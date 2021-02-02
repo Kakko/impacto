@@ -30,6 +30,14 @@ class Clients extends Model {
         }
     }
 
+    public function isLogged() {
+        if(isset($_SESSION['cUser']) && !empty($_SESSION['cUser'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function logoutClient() {
         session_unset();
     }
@@ -479,10 +487,14 @@ class Clients extends Model {
     }
 
     public function finishInsertData($cardId, $cep, $id){
-        $sql = $this->db->prepare("UPDATE user_purchase SET user_cep = :user_cep, card_id = :card_id, card = 'S' WHERE user_id = :id");
+        $sql = $this->db->prepare("UPDATE user_purchase SET user_cep = :user_cep, card_id = :card_id, card = 'S', finished = 'S' WHERE user_id = :id");
         $sql->bindValue(":user_cep", $cep);
         $sql->bindValue(":card_id", $cardId);
         $sql->bindValue(":id", $id);
-        $sql->execute();
+        if($sql->execute()){
+            $sql = $this->db->prepare("UPDATE user_cart SET finished = 'S' WHERE user_id = :id");
+            $sql->bindValue(":id", $id);
+            $sql->execute();
+        }
     }
 }

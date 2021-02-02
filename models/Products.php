@@ -815,14 +815,18 @@ class Products extends Model {
                                     LEFT JOIN product_images ON (user_cart.product_id = product_images.product_id)
                                     LEFT JOIN products ON (user_cart.product_id = products.id)
                                     LEFT JOIN product_author ON (products.author = product_author.id)
-                                    WHERE user_id = :id");
+                                    WHERE user_cart.user_id = :id");
         $sql->bindValue(":id", $id);
         $sql->execute();
 
         if($sql->rowCount() > 0){
             $products = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $products;
         }
-        return $products;
+        else {
+            return 'Sem produtos no seu carrinho';
+        }
+        
     }
 
     public function lowerProductAmount($id, $qtd){
@@ -874,9 +878,10 @@ class Products extends Model {
                 <div class="finalPrice" id="finalPrice">R$ '.number_format($finalPrice, 2, '.', '.').'</div>
                 <button class="buyout" onclick="proceedToIdentify()">Continuar</button>
             ';
+            return $data;
         }
 
-        return $data;
+        
     }
 
     public function proceedToIdentify($id, $finalPrice){
@@ -894,6 +899,38 @@ class Products extends Model {
             $sql->bindValue(":finalPrice", $finalPrice);
             $sql->bindValue(":id", $id);
             $sql->execute();
+        }
+    }
+
+    public function purchaseInfo($id){
+        $sql = $this->db->prepare("SELECT * FROM user_purchase WHERE user_id = :id AND approved = 'N'");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $data = $sql->fetch(PDO::FETCH_ASSOC);
+
+            return $data;
+        } else {
+            return 'Venda não Localizada';
+        }
+    }
+
+    public function deliverInfo($id) {
+        $sql = $this->db->prepare("SELECT * FROM deliver_deets 
+                                    LEFT JOIN client_address ON (deliver_deets.destinyCep = client_address.cep)
+                                    LEFT JOIN cidades ON (client_address.city_id = cidades.id)
+                                    LEFT JOIN estados ON (client_address.state_id = estados.id)
+                                    WHERE deliver_deets.client_id = :id AND sent = 'N'");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $data = $sql->fetch(PDO::FETCH_ASSOC);
+            
+            return $data;
+        } else {
+            return 'Endereço não Localizado';
         }
     }
 }

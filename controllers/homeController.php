@@ -74,6 +74,7 @@ class homeController extends Controller {
         $client = new Clients();
         $frete = new CalcularFrete();
         $id = $_SESSION['cUser'];
+        $this->isClientLogged();
 
         if(!empty($_POST['cart_action']) && isset($_POST['cart_action'])){
             if($_POST['cart_action'] == 'lowerProductAmount'){
@@ -127,6 +128,7 @@ class homeController extends Controller {
         $products = new Products();
         $client = new Clients();
         $frete = new CalcularFrete();
+        $this->isClientLogged();
 
         if(!empty($_POST['cart_action']) && isset($_POST['cart_action'])){
             if($_POST['cart_action'] == 'updatePurchase'){
@@ -176,6 +178,17 @@ class homeController extends Controller {
         $data['clientAddress'] = $client->fetchClientAddress($_SESSION['cUser']);
         $data['cartProducts'] = $products->showRegisteredCartProducts($_SESSION['cUser']);
         $this->loadView('identification', $data);
+    }
+
+    public function finishPurchaseCard(){
+        $data = array();
+        $products = new Products();
+        $this->isClientLogged();
+        
+        $data['deliverDeets'] = $products->deliverInfo($_SESSION['cUser']);
+        $data['purchaseInfo'] = $products->purchaseInfo($_SESSION['cUser']);
+        $data['cartProducts'] = $products->showRegisteredCartProducts($_SESSION['cUser']);
+        $this->loadView('cardFinished', $data);
     }
 
     public function logout() {

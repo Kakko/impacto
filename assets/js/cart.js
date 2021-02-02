@@ -239,6 +239,10 @@ function showCardOptions() {
     document.getElementById('creditCardSelected').style.display = "block"
 }
 
+function showTransferInfo() {
+    
+}
+
 function showOnCard() {
     document.getElementById('frontCardInputs').style.display = "block"
     document.getElementById('cardImage').style.backgroundImage = "url('../assets/images/frontCard.svg')"
@@ -295,6 +299,5 @@ function cardSelected(id){
 }
 
 function finish() {
-    
-
+    window.location.href = "finishPurchaseCard"
 }
